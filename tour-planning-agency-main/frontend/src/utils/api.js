@@ -6,17 +6,19 @@ import axios from 'axios';
  * For development: uses localhost:5000
  */
 const getBaseURL = () => {
+  // Check for global override (set in index.html for quick fix)
+  if (window.__API_BASE_URL__) {
+    return window.__API_BASE_URL__;
+  }
+  
   const hostname = window.location.hostname;
   
   // Production: use relative API (works for Vercel, Render, Netlify, etc.)
-  // The backend should be on the same domain or set via env variable
   if (hostname !== 'localhost' && hostname !== '127.0.0.1') {
-    // Check for custom API URL (set by deployment environment)
     const apiUrl = import.meta.env.VITE_API_URL;
     if (apiUrl) {
       return `${apiUrl}/api`;
     }
-    // Use relative API (monolithic deployment or same domain)
     return '/api';
   }
   

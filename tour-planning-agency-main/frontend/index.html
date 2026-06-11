@@ -76,6 +76,16 @@
     </script>
   </head>
   <body>
+    <!-- Fix API URL for production -->
+    <script>
+      (function() {
+        var hostname = window.location.hostname;
+        if (hostname !== 'localhost' && hostname !== '127.0.0.1') {
+          // Use env variable or fallback to relative API
+          window.__API_BASE_URL__ = 'https://travel-final-2.onrender.com/api';
+        }
+      })();
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
