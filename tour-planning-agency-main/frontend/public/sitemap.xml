@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Core pages -->
+  <url><loc>https://www.travelgo.com/</loc><changefreq>daily</changefreq><priority>1.0</priority><lastmod>2025-01-01</lastmod></url>
+  <url><loc>https://www.travelgo.com/packages</loc><changefreq>daily</changefreq><priority>0.9</priority><lastmod>2025-01-01</lastmod></url>
+  <url><loc>https://www.travelgo.com/destinations</loc><changefreq>weekly</changefreq><priority>0.8</priority><lastmod>2025-01-01</lastmod></url>
+  <url><loc>https://www.travelgo.com/blog</loc><changefreq>weekly</changefreq><priority>0.8</priority><lastmod>2025-01-01</lastmod></url>
+  <url><loc>https://www.travelgo.com/about</loc><changefreq>monthly</changefreq><priority>0.7</priority><lastmod>2025-01-01</lastmod></url>
+  <url><loc>https://www.travelgo.com/contact</loc><changefreq>monthly</changefreq><priority>0.7</priority><lastmod>2025-01-01</lastmod></url>
+  <url><loc>https://www.travelgo.com/faq</loc><changefreq>monthly</changefreq><priority>0.6</priority><lastmod>2025-01-01</lastmod></url>
+  <url><loc>https://www.travelgo.com/privacy</loc><changefreq>yearly</changefreq><priority>0.4</priority><lastmod>2025-01-01</lastmod></url>
+  <url><loc>https://www.travelgo.com/terms</loc><changefreq>yearly</changefreq><priority>0.4</priority><lastmod>2025-01-01</lastmod></url>
+  <url><loc>https://www.travelgo.com/login</loc><changefreq>yearly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.travelgo.com/signup</loc><changefreq>yearly</changefreq><priority>0.5</priority></url>
+  <!-- Packages -->
+  <url><loc>https://www.travelgo.com/packages/1</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.travelgo.com/packages/2</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.travelgo.com/packages/3</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.travelgo.com/packages/4</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.travelgo.com/packages/5</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.travelgo.com/packages/6</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.travelgo.com/packages/7</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.travelgo.com/packages/8</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <!-- Blog -->
+  <url><loc>https://www.travelgo.com/blog/1</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.travelgo.com/blog/2</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.travelgo.com/blog/3</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.travelgo.com/blog/4</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.travelgo.com/blog/5</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.travelgo.com/blog/6</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+</urlset>

@@ -1,0 +1,13 @@
+{
+  "name": "travl-go-root",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "concurrently --kill-others-on-fail --names \"BACKEND,FRONTEND\" --prefix-colors \"blue,green\" \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\"",
+    "dev": "npm run start",
+    "install:all": "npm install --prefix frontend && npm install --prefix backend"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "TravelGo — Luxury Travel",
+  "short_name": "TravelGo",
+  "description": "Premium luxury travel agency. Curated tour packages worldwide.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a192f",
+  "theme_color": "#0a192f",
+  "orientation": "portrait-primary",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ],
+  "categories": ["travel", "lifestyle"],
+  "lang": "en"
+}
