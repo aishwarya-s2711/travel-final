@@ -2,15 +2,22 @@ import axios from 'axios';
 
 /**
  * Centralized Axios instance with environment-aware base URL
+ * For production: uses relative API (same domain)
+ * For development: uses localhost:5000
  */
 const getBaseURL = () => {
-  // For mobile access, use computer's local IP
   const hostname = window.location.hostname;
   
-  // If accessing from mobile (not localhost), construct IP-based URL
+  // Production: use relative API (works for Vercel, Render, Netlify, etc.)
+  // The backend should be on the same domain or set via env variable
   if (hostname !== 'localhost' && hostname !== '127.0.0.1') {
-    // Use the current hostname (which will be the computer's IP when accessing from mobile)
-    return `http://${hostname}:5000/api`;
+    // Check for custom API URL (set by deployment environment)
+    const apiUrl = import.meta.env.VITE_API_URL;
+    if (apiUrl) {
+      return `${apiUrl}/api`;
+    }
+    // Use relative API (monolithic deployment or same domain)
+    return '/api';
   }
   
   // Localhost development
