@@ -9,51 +9,63 @@ export default function DestinationCard({ destination }) {
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      className="luxury-card group"
-      style={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+      className="premium-card group"
     >
-      {/* Image */}
-      <div className="relative overflow-hidden" style={{ height: 208, borderRadius: '20px 20px 0 0' }}>
-        <img src={image} alt={name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-108" loading="lazy" />
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(10,25,47,0.70) 0%, transparent 60%)' }} />
+      {/* Card Image Area */}
+      <div className="card-image-wrap relative h-[240px] shrink-0">
+        <img 
+          src={image} 
+          alt={name} 
+          className="w-full h-full object-cover" 
+          loading="lazy" 
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 to-transparent" />
+        
         {category && (
-          <span className="absolute top-3 left-3 text-[10px] font-black tracking-[0.10em] uppercase px-2.5 py-1 rounded-md"
-            style={{ background: 'linear-gradient(135deg, #7C3AED, #2563EB)', color: '#0f172a' }}>
+          <span className="absolute top-4 left-4 text-[9px] font-extrabold tracking-wider uppercase px-3 py-1.5 rounded-full text-white bg-blue-600 shadow-md">
             {category}
           </span>
         )}
-        <button className="absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center transition-all"
-          style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(6px)', border: '1px solid rgba(255,255,255,0.25)', color: '#fff' }}
-          onMouseEnter={e => { e.currentTarget.style.background = 'rgba(124,58,237,0.80)'; }}
-          onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.15)'; }}
-          aria-label="Add to favorites">
-          <FiHeart size={14} />
+        
+        <button 
+          className="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center transition-all text-white bg-slate-950/40 backdrop-blur-md hover:bg-rose-600 border border-white/10 cursor-pointer"
+          aria-label="Add to favorites"
+        >
+          <FiHeart size={13} />
         </button>
       </div>
 
-      {/* Content */}
-      <div className="p-5" style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-        <h3 className="text-xl font-light mb-1" style={{ fontFamily: 'Inter, sans-serif', color: '#0f172a' }}>{name}</h3>
-        <p className="text-xs font-bold tracking-[0.10em] uppercase mb-3 flex items-center gap-1.5" style={{ color: '#7C3AED' }}>
-          <FiMapPin size={11} />{country}
+      {/* Card Content Area */}
+      <div className="p-6 flex flex-col flex-1 bg-white dark:bg-slate-900 transition-colors">
+        
+        <h3 className="text-xl font-bold mb-1.5 text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors" style={{ fontFamily: 'Outfit, sans-serif' }}>
+          {name}
+        </h3>
+        
+        <p className="text-[10px] font-bold tracking-wider uppercase mb-3 flex items-center gap-1.5 text-blue-600 dark:text-blue-400">
+          <FiMapPin size={11} className="text-blue-500" />{country}
         </p>
-        <p className="text-sm line-clamp-2 mb-4 leading-relaxed" style={{ color: '#6b7280' }}>{description}</p>
-        <div className="flex items-center justify-between pt-4 mt-auto" style={{ borderTop: '1px solid #f0ede6' }}>
-          <Link to={`/destinations/${id}`}
-            className="text-xs font-black uppercase tracking-wider transition-colors hover:text-[#7C3AED]"
-            style={{ color: '#0f172a' }}>
-            View Details
+        
+        <p className="text-xs line-clamp-2 mb-6 leading-relaxed text-slate-500 dark:text-slate-400">
+          {description}
+        </p>
+        
+        <div className="flex items-center justify-between pt-4 mt-auto border-t border-slate-100 dark:border-slate-800">
+          <Link 
+            to={`/destinations/${id}`}
+            className="text-[10px] font-bold uppercase tracking-wider text-slate-900 dark:text-slate-205 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+          >
+            Explore Destination
           </Link>
           <Link
             to={`/destinations/${id}`}
-            className="w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300"
-            style={{ background: '#0f172a', color: '#fff' }}
-            onMouseEnter={e => { e.currentTarget.style.background = '#7C3AED'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
-            onMouseLeave={e => { e.currentTarget.style.background = '#0f172a'; e.currentTarget.style.transform = ''; }}
-            aria-label={`View ${name} details`}>
+            className="w-8 h-8 rounded-full flex items-center justify-center bg-slate-900 dark:bg-slate-800 text-white hover:bg-blue-600 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer"
+            aria-label={`View ${name} details`}
+          >
             <FiArrowRight size={13} />
           </Link>
         </div>
+
       </div>
     </motion.article>
   );

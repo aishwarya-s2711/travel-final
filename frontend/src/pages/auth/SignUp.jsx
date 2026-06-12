@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { toast } from 'react-toastify';
+import { FiUser, FiMail, FiLock, FiEye, FiEyeOff, FiArrowLeft } from 'react-icons/fi';
 import SEO from '../../components/SEO';
 import './Auth.css';
 
@@ -55,18 +56,18 @@ export default function SignUp() {
       <SEO title="Sign Up | TravelGo" />
       <div className="auth-container">
         <Link to="/" className="back-to-home">
-          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-          </svg>
-          Back to Home
+          <FiArrowLeft size={18} />
+          <span>Back to Home</span>
         </Link>
 
         <div className="auth-card">
           <div className="logo-section">
             <div className="logo-icon">
-              <svg width="28" height="28" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5.5 h-5.5">
+                <circle cx="12" cy="12" r="9" opacity="0.6" />
+                <path d="M3.6 12h16.8" opacity="0.6" />
+                <path d="M12 3a15.3 15.3 0 0 1 4 9 15.3 15.3 0 0 1-4 9 15.3 15.3 0 0 1-4-9 15.3 15.3 0 0 1 4-9z" opacity="0.6" />
+                <path d="M21 3L10.5 13.5M21 3l-6 16.5-3.5-7.5-7.5-3.5L21 3z" fill="currentColor" />
               </svg>
             </div>
             <h1 className="logo-text">TravelGo</h1>
@@ -77,97 +78,91 @@ export default function SignUp() {
 
           <form className="login-form" onSubmit={handleSubmit}>
             <div className="input-group">
-              <label>Full Name</label>
-              <div className="input-wrapper">
+              <div className="premium-input-container">
                 <input
                   type="text"
                   required
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  placeholder=""
+                  placeholder=" "
+                  className="premium-input"
                 />
+                <FiUser className="input-icon text-lg" />
+                <label className="premium-label">Full Name</label>
               </div>
             </div>
 
             <div className="input-group">
-              <label>Email Address</label>
-              <div className="input-wrapper">
+              <div className="premium-input-container">
                 <input
                   type="email"
                   required
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  placeholder=""
+                  placeholder=" "
+                  className="premium-input"
                 />
+                <FiMail className="input-icon text-lg" />
+                <label className="premium-label">Email Address</label>
               </div>
             </div>
 
             <div className="input-group">
-              <label>Password</label>
-              <div className="input-wrapper">
+              <div className="premium-input-container">
                 <input
                   type={showPassword ? 'text' : 'password'}
                   required
                   value={form.password}
                   onChange={(e) => setForm({ ...form, password: e.target.value })}
-                  placeholder=""
+                  placeholder=" "
                   minLength="6"
+                  className="premium-input"
+                  style={{ paddingRight: '48px' }}
                 />
+                <FiLock className="input-icon text-lg" />
+                <label className="premium-label">Password</label>
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="toggle-password"
+                  style={{ top: '50%', transform: 'translateY(-50%)', margin: 0, padding: 0 }}
                 >
-                  {showPassword ? (
-                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
-                    </svg>
-                  ) : (
-                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                    </svg>
-                  )}
+                  {showPassword ? <FiEyeOff size={18} /> : <FiEye size={18} />}
                 </button>
               </div>
             </div>
 
             <div className="input-group">
-              <label>Confirm Password</label>
-              <div className="input-wrapper">
+              <div className="premium-input-container">
                 <input
                   type={showConfirmPassword ? 'text' : 'password'}
                   required
                   value={form.confirmPassword}
                   onChange={(e) => setForm({ ...form, confirmPassword: e.target.value })}
-                  placeholder=""
+                  placeholder=" "
                   minLength="6"
+                  className="premium-input"
+                  style={{ paddingRight: '48px' }}
                 />
+                <FiLock className="input-icon text-lg" />
+                <label className="premium-label">Confirm Password</label>
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   className="toggle-password"
+                  style={{ top: '50%', transform: 'translateY(-50%)', margin: 0, padding: 0 }}
                 >
-                  {showConfirmPassword ? (
-                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
-                    </svg>
-                  ) : (
-                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                    </svg>
-                  )}
+                  {showConfirmPassword ? <FiEyeOff size={18} /> : <FiEye size={18} />}
                 </button>
               </div>
             </div>
 
             <div className="input-group">
-              <label>Account Type</label>
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2 pl-2">Account Type</label>
               <select
                 value={form.role}
                 onChange={(e) => setForm({ ...form, role: e.target.value })}
-                className="form-select"
+                className="w-full h-[58px] px-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all text-sm cursor-pointer"
                 required
               >
                 <option value="user">User - Book and explore destinations</option>
@@ -178,7 +173,7 @@ export default function SignUp() {
             <button
               type="submit"
               disabled={loading}
-              className="login-btn"
+              className="btn-premium w-full mt-2"
             >
               {loading ? (
                 <>
@@ -187,7 +182,7 @@ export default function SignUp() {
                 </>
               ) : (
                 <>
-                  Create Account
+                  <span>Create Account</span>
                   <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
                   </svg>
@@ -200,6 +195,11 @@ export default function SignUp() {
             </p>
           </form>
         </div>
+
+        {/* Footer */}
+        <p className="auth-footer">
+          © {new Date().getFullYear()} TravelGo. All rights reserved.
+        </p>
       </div>
     </>
   );

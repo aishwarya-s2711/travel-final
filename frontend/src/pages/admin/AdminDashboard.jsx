@@ -11,6 +11,7 @@ import PaymentsManagement from './PaymentsManagement';
 import BlogsManagement from './BlogsManagement';
 import NotificationsManagement from './NotificationsManagement';
 import SettingsPage from './SettingsPage';
+import InquiriesManagement from './InquiriesManagement';
 
 const sidebarLinks = [
   { path: '/admin/dashboard', label: 'Dashboard', icon: FiGrid },
@@ -21,6 +22,7 @@ const sidebarLinks = [
   { path: '/admin/dashboard/reviews', label: 'Reviews', icon: FiStar },
   { path: '/admin/dashboard/payments', label: 'Payments', icon: FiCreditCard },
   { path: '/admin/dashboard/blogs', label: 'Blogs', icon: FiFileText },
+  { path: '/admin/dashboard/inquiries', label: 'Inquiries', icon: FiFileText },
   { path: '/admin/dashboard/notifications', label: 'Notifications', icon: FiBell },
   { path: '/admin/dashboard/settings', label: 'Settings', icon: FiSettings }
 ];
@@ -37,6 +39,7 @@ export default function AdminDashboard() {
         <Route path="reviews" element={<ReviewsManagement />} />
         <Route path="payments" element={<PaymentsManagement />} />
         <Route path="blogs" element={<BlogsManagement />} />
+        <Route path="inquiries" element={<InquiriesManagement />} />
         <Route path="notifications" element={<NotificationsManagement />} />
         <Route path="settings" element={<SettingsPage />} />
       </Routes>

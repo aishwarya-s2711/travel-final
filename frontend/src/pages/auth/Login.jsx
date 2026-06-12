@@ -103,8 +103,11 @@ export default function Login() {
             transition={{ delay: 0.1 }}
           >
             <div className="logo-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M3.055 11H5a2 2 0 0 1 2 2v1a2 2 0 0 0 2 2 2 2 0 0 1 2 2v2.945M8 3.935V5.5A2.5 2.5 0 0 0 10.5 8h.5a2 2 0 0 1 2 2 2 2 0 1 0 4 0 2 2 0 0 1-2-2h1.064M15 20.488V18a2 2 0 0 1 2-2h3.064M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" />
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5.5 h-5.5">
+                <circle cx="12" cy="12" r="9" opacity="0.6" />
+                <path d="M3.6 12h16.8" opacity="0.6" />
+                <path d="M12 3a15.3 15.3 0 0 1 4 9 15.3 15.3 0 0 1-4 9 15.3 15.3 0 0 1-4-9 15.3 15.3 0 0 1 4-9z" opacity="0.6" />
+                <path d="M21 3L10.5 13.5M21 3l-6 16.5-3.5-7.5-7.5-3.5L21 3z" fill="currentColor" />
               </svg>
             </div>
             <span className="logo-text">TravelGo</span>
@@ -145,21 +148,22 @@ export default function Login() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
             >
-              <label>Email Address</label>
-              <div className="input-wrapper">
+              <div className="premium-input-container">
                 <input
                   type="email"
                   name="email"
                   value={form.email}
                   onChange={handleChange}
                   onBlur={(e) => validateField('email', e.target.value)}
-                  placeholder=""
-                  className={errors.email ? 'error' : ''}
+                  placeholder=" "
+                  className={`premium-input ${errors.email ? 'border-rose-400 focus:border-rose-500 focus:ring-rose-500/25' : ''}`}
                   disabled={loading}
                 />
+                <FiMail className="input-icon text-lg" />
+                <label className="premium-label">Email Address</label>
               </div>
               {errors.email && (
-                <span className="error-text">
+                <span className="error-text pl-2">
                   <FiAlertCircle size={14} />
                   {errors.email}
                 </span>
@@ -173,29 +177,32 @@ export default function Login() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.35 }}
             >
-              <label>Password</label>
-              <div className="input-wrapper">
+              <div className="premium-input-container">
                 <input
                   type={showPassword ? 'text' : 'password'}
                   name="password"
                   value={form.password}
                   onChange={handleChange}
                   onBlur={(e) => validateField('password', e.target.value)}
-                  placeholder=""
-                  className={errors.password ? 'error' : ''}
+                  placeholder=" "
+                  className={`premium-input ${errors.password ? 'border-rose-400 focus:border-rose-500 focus:ring-rose-500/25' : ''}`}
                   disabled={loading}
+                  style={{ paddingRight: '48px' }}
                 />
+                <FiLock className="input-icon text-lg" />
+                <label className="premium-label">Password</label>
                 <button
                   type="button"
                   className="toggle-password"
                   onClick={() => setShowPassword(!showPassword)}
                   aria-label={showPassword ? 'Hide password' : 'Show password'}
+                  style={{ top: '50%', transform: 'translateY(-50%)', margin: 0, padding: 0 }}
                 >
                   {showPassword ? <FiEyeOff size={18} /> : <FiEye size={18} />}
                 </button>
               </div>
               {errors.password && (
-                <span className="error-text">
+                <span className="error-text pl-2">
                   <FiAlertCircle size={14} />
                   {errors.password}
                 </span>
@@ -226,7 +233,7 @@ export default function Login() {
             {/* Submit Button */}
             <motion.button
               type="submit"
-              className="login-btn"
+              className="btn-premium w-full mt-2"
               disabled={loading}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}

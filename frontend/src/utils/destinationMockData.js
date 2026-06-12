@@ -79,6 +79,45 @@ export const getDestinationDetails = (destName) => {
     };
   }
 
+  if (name.includes('tokyo')) {
+    return {
+      description: 'Tokyo, Japan’s bustling capital, mixes ultramodern neon skyscrapers with historic Shinto shrines. The city is also famous for its incredible dining scene, cherry blossom parks, and anime culture.',
+      bestTime: 'March to April (Cherry Blossoms) and October to November.',
+      attractions: ['Shibuya Crossing', 'Senso-ji Temple', 'Tokyo Skytree', 'Meiji Jingu Shrine'],
+      activities: ['Sushi making class', 'Mario Kart street racing', 'Ghibli Museum tour', 'Harajuku shopping'],
+      tips: ['Get a Suica or Pasmo card for transport', 'Tipping is not customary and can be offensive', 'Keep your trash with you as public bins are rare'],
+      accommodations: ['Luxury High-rise Hotel in Shinjuku - $420/night', 'Boutique Ryokan - $220/night', 'Capsule Hotel - $45/night'],
+      nearby: ['Mount Fuji (2hr train)', 'Kamakura (1hr train)'],
+      budget: '$150 - $350 per day'
+    };
+  }
+
+  if (name.includes('cairo') || name.includes('egypt')) {
+    return {
+      description: 'Cairo, Egypt’s sprawling capital, is set on the Nile River. At its heart is Tahrir Square and the vast Egyptian Museum, home to a trove of antiquities including Royal Mummies and King Tutankhamun’s treasures.',
+      bestTime: 'October to April when temperatures are cooler.',
+      attractions: ['Great Pyramids of Giza', 'The Egyptian Museum', 'Khan el-Khalili Bazaar', 'Cairo Citadel'],
+      activities: ['Felucca boat ride on the Nile', 'Camel riding at Giza', 'Sound & Light show at the Pyramids', 'Islamic Cairo walking tour'],
+      tips: ['Always carry small cash notes for tips (baksheesh)', 'Dress conservatively in public spaces', 'Agree on taxi prices before starting'],
+      accommodations: ['Luxury Nile View Hotel - $280/night', 'Historic Palace Hotel - $190/night', 'Cozy Downtown Guesthouse - $50/night'],
+      nearby: ['Alexandria (2.5hr drive)', 'Saqqara Step Pyramid (45min drive)'],
+      budget: '$70 - $180 per day'
+    };
+  }
+
+  if (name.includes('sydney')) {
+    return {
+      description: 'Sydney, capital of New South Wales and one of Australia\'s largest cities, is best known for its harborfront Sydney Opera House, with a distinctive sail-like design. The massive Darling Harbour and Circular Quay port are hubs of waterside life.',
+      bestTime: 'September to November and March to May.',
+      attractions: ['Sydney Opera House', 'Sydney Harbour Bridge', 'Bondi Beach', 'Royal Botanic Garden'],
+      activities: ['BridgeClimb Sydney', 'Surfing lesson at Bondi', 'Taronga Zoo ferry ride', 'Coogee to Bondi coastal walk'],
+      tips: ['Use an Opal card or contactless card for public transport', 'Always swim between the red and yellow flags', 'Apply high-factor sunscreen daily'],
+      accommodations: ['5-Star Circular Quay Hotel - $390/night', 'Harbor View Apartment - $240/night', 'Bondi Surf Hostel - $55/night'],
+      nearby: ['Blue Mountains (2hr train)', 'Hunter Valley Wine Region (2hr drive)'],
+      budget: '$160 - $380 per day'
+    };
+  }
+
   // Default Fallback
   return {
     description: `A stunning destination filled with rich culture, breathtaking landscapes, and unforgettable experiences. Discover the beauty of ${destName} and create lifelong memories.`,

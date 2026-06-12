@@ -38,4 +38,8 @@ router.put('/notifications/:id/read', adminController.markNotificationRead);
 router.get('/settings', adminController.getSettings);
 router.put('/settings', adminController.updateSettings);
 
+// Inquiries
+router.get('/inquiries', adminController.getInquiries);
+router.delete('/inquiries/:id', adminController.deleteInquiry);
+
 module.exports = router;

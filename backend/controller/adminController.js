@@ -6,6 +6,25 @@ const { Blog, Review } = require('../model/Blog');
 const Payment = require('../model/Payment');
 const Notification = require('../model/Notification');
 const Settings = require('../model/Settings');
+const ContactMessage = require('../model/ContactMessage');
+
+exports.getInquiries = async (req, res) => {
+  try {
+    const inquiries = await ContactMessage.find().sort({ createdAt: -1 });
+    res.json(inquiries);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+exports.deleteInquiry = async (req, res) => {
+  try {
+    await ContactMessage.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Inquiry deleted' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
 
 exports.getDashboardStats = async (req, res) => {
   try {

@@ -4,13 +4,14 @@ import { toast } from 'react-toastify';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import { FiMail, FiPhone, FiMapPin, FiClock, FiSend } from 'react-icons/fi';
+import { FiMail, FiPhone, FiMapPin, FiClock, FiSend, FiUser } from 'react-icons/fi';
 import { FaWhatsapp } from 'react-icons/fa';
 import SEO from '../components/SEO';
 import PageHero from '../components/PageHero';
 import Footer from '../components/Footer';
+import api from '../utils/api';
 
-// Fix Leaflet default icon
+// Fix Leaflet default marker icon bug
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
@@ -19,10 +20,10 @@ L.Icon.Default.mergeOptions({
 });
 
 const CONTACTS = [
-  { Icon: FiMapPin, title: 'Visit Us', lines: ['123 Travel Street', 'Bandra West, Mumbai 400050'] },
-  { Icon: FiPhone,  title: 'Call Us',  lines: ['+91 12345 67890', '+91 98765 43210'] },
-  { Icon: FiMail,   title: 'Email Us', lines: ['hello@travelgo.com', 'support@travelgo.com'] },
-  { Icon: FiClock,  title: 'Working Hours', lines: ['Mon–Sat: 9AM – 7PM', 'Sun: 10AM – 4PM'] },
+  { Icon: FiMapPin, title: 'HQ Address', lines: ['IIT Campus, Powai Gate Road', 'Powai, Mumbai 400076'] },
+  { Icon: FiPhone,  title: 'Call Us',  lines: ['+91 (22) 2572-2545', '+91 (22) 1234-5678'] },
+  { Icon: FiMail,   title: 'Support Desk', lines: ['hello@iitctravel.com', 'support@iitctravel.com'] },
+  { Icon: FiClock,  title: 'Availability', lines: ['Mon–Sat: 9AM – 7PM', 'Sun: 10AM – 4PM'] },
 ];
 
 function validate(form) {
@@ -48,200 +49,252 @@ export default function Contact() {
     if (Object.keys(errs).length) { setErrors(errs); return; }
     if (form.honeypot) return;
     setLoading(true);
-    await new Promise(r => setTimeout(r, 900));
-    setLoading(false);
-    toast.success("Message sent! We'll get back to you within 24 hours. ✈️");
-    setSent(true);
+    try {
+      await api.post('/public/contact', {
+        name: form.name,
+        email: form.email,
+        subject: form.subject || 'General Inquiry',
+        message: form.message
+      });
+      toast.success("Message received! A concierge expert will reply within 12 hours. ✈️");
+      setSent(true);
+    } catch (err) {
+      toast.error(err.message || 'Failed to send message. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <>
       <SEO
-        title="Contact Us"
-        description="Get in touch with TravelGo's luxury travel consultants. We're available Mon–Sat 9AM–7PM to help plan your perfect journey."
+        title="Contact Our Concierge Team | TravelGo"
+        description="Connect with TravelGo. Reach our luxury travel consultants via email, phone, or live chat."
         canonical="/contact"
       />
-      <div className="min-h-screen page-enter" style={{ background: '#ffffff' }}>
+      
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-300">
+        
+        {/* Page Hero */}
         <PageHero
-          badge="Get In Touch"
+          badge="Concierge Support"
           title="Contact Us"
-          subtitle="Our travel concierge team is here to craft your perfect journey"
+          subtitle="Our global planners are standing by to coordinate your custom route"
           image="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1400&q=60"
         />
 
-        <section className="py-20" style={{ background: '#ffffff' }} aria-label="Contact information and form">
+        {/* Info Grid & Form Section */}
+        <section className="py-28 bg-white dark:bg-slate-900 transition-colors" aria-label="Contact channels">
           <div className="max-w-7xl mx-auto px-6">
 
-            {/* Contact Cards */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-16">
+            {/* Quick Contact Cards */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
               {CONTACTS.map(({ Icon, title, lines }, i) => (
-                <motion.div key={i}
-                  initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }} transition={{ delay: i * 0.08 }}
-                  className="rounded-2xl p-6 text-center transition-all group"
-                  style={{ background: '#fff', boxShadow: '0 2px 12px rgba(10,25,47,0.06)', border: '1px solid transparent' }}
-                  onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(124,58,237,0.30)'; e.currentTarget.style.boxShadow = '0 8px 32px rgba(10,25,47,0.10)'; }}
-                  onMouseLeave={e => { e.currentTarget.style.borderColor = 'transparent'; e.currentTarget.style.boxShadow = '0 2px 12px rgba(10,25,47,0.06)'; }}
+                <motion.div 
+                  key={i}
+                  initial={{ opacity: 0, y: 15 }} 
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }} 
+                  transition={{ delay: i * 0.08 }}
+                  className="rounded-[20px] p-6 text-center bg-slate-50 dark:bg-slate-950/40 border border-slate-200/50 dark:border-slate-800 shadow-sm"
                 >
-                  <div className="w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all"
-                    style={{ background: 'rgba(124,58,237,0.10)' }}>
-                    <Icon style={{ color: '#7C3AED' }} size={20} />
+                  <div className="w-11 h-11 rounded-xl flex items-center justify-center mx-auto mb-4 bg-blue-50 dark:bg-blue-950/45">
+                    <Icon className="text-blue-600 dark:text-blue-400" size={18} />
                   </div>
-                  <h3 className="font-semibold text-sm mb-2" style={{ fontFamily: 'Inter, sans-serif', color: '#0f172a', fontSize: '1rem' }}>
+                  <h3 className="font-bold text-base uppercase tracking-wider mb-2 text-slate-900 dark:text-white" style={{ fontFamily: 'Outfit, sans-serif' }}>
                     {title}
                   </h3>
-                  {/* text-sm + #4b5563 = 7.4:1 on white — WCAG AA ✓ (was text-xs + #888 = 3.5:1, fail) */}
-                  {lines.map((l, j) => <p key={j} className="text-sm" style={{ color: '#4b5563', lineHeight: 1.8 }}>{l}</p>)}
+                  {lines.map((l, j) => (
+                    <p key={j} className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
+                      {l}
+                    </p>
+                  ))}
                 </motion.div>
               ))}
             </div>
 
-            <div className="grid lg:grid-cols-2 gap-8">
+            {/* Form & Map Double-Column */}
+            <div className="grid lg:grid-cols-2 gap-12 items-stretch">
 
-              {/* Form */}
+              {/* Inquiry Form Card */}
               <motion.div
-                initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, x: -20 }} 
+                whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                className="rounded-3xl p-8 lg:p-10 h-full flex flex-col"
-                style={{ background: '#fff', boxShadow: '0 8px 32px rgba(10,25,47,0.08)' }}
+                className="rounded-3xl p-8 lg:p-10 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 shadow-sm flex flex-col justify-center"
               >
                 {sent ? (
-                  <div className="text-center py-16">
-                    <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6"
-                      style={{ background: 'rgba(124,58,237,0.10)' }}>
-                      <span style={{ fontSize: 36 }}>✅</span>
+                  <div className="text-center py-16 space-y-6">
+                    <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto bg-green-50 dark:bg-green-950/20">
+                      <span className="text-4xl">✅</span>
                     </div>
-                    <h3 className="text-3xl font-light mb-3" style={{ fontFamily: 'Inter, sans-serif', color: '#0f172a' }}>
-                      Message Sent!
+                    <h3 className="text-2xl font-bold text-slate-900 dark:text-white" style={{ fontFamily: 'Outfit, sans-serif' }}>
+                      Inquiry Received!
                     </h3>
-                    {/* text-base + #4b5563 = 7.4:1 — WCAG AA ✓ */}
-                    <p className="text-base mb-8" style={{ color: '#4b5563' }}>Our team will respond within 24 hours.</p>
-                    <button onClick={() => { setSent(false); setForm({ name:'',email:'',phone:'',subject:'',message:'',honeypot:'' }); }}
-                      className="btn-outline">
-                      Send Another Message
+                    <p className="text-xs text-slate-500 dark:text-slate-400">Our senior advisor will reach out within 12 hours.</p>
+                    <button 
+                      onClick={() => { setSent(false); setForm({ name:'',email:'',phone:'',subject:'',message:'',honeypot:'' }); }}
+                      className="btn-premium-outline py-3 px-6 h-auto text-xs uppercase tracking-wider cursor-pointer"
+                    >
+                      New Inquiry
                     </button>
                   </div>
                 ) : (
                   <>
-                    <div className="mb-8">
-                      <span className="section-badge">Send a Message</span>
-                      <h2 className="text-3xl font-light mt-2" style={{ fontFamily: 'Inter, sans-serif', color: '#0f172a' }}>
-                        Plan Your Journey
+                    <div className="mb-8 space-y-2">
+                      <span className="section-badge">Bespoke Inquiry</span>
+                      <h2 className="text-3xl lg:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight" style={{ fontFamily: 'Outfit, sans-serif' }}>
+                        Plan Your Voyage
                       </h2>
+                      <p className="text-base text-slate-600 dark:text-slate-300">
+                        Fill out the details below and our concierge team will craft your perfect itinerary.
+                      </p>
                     </div>
 
-                    <form onSubmit={handleSubmit} noValidate aria-label="Contact form">
-                      {/* Honeypot — hidden from humans */}
+                    <form onSubmit={handleSubmit} noValidate aria-label="Contact form" className="space-y-5">
+                      {/* Honeypot bots catcher */}
                       <input
                         type="text" tabIndex={-1} aria-hidden="true"
                         value={form.honeypot} onChange={e => set('honeypot', e.target.value)}
-                        style={{ position: 'absolute', left: '-9999px', opacity: 0, height: 0 }}
+                        className="absolute left-[-9999px] opacity-0 h-0"
                       />
 
-                      <div className="grid grid-cols-2 gap-4 mb-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                         <div>
-                          {/* text-sm form labels: meets 14px minimum for form accessibility */}
-                          <label htmlFor="contact-name" className="block text-sm font-semibold mb-1.5 tracking-wide" style={{ color: '#0f172a' }}>
-                            Full Name <span style={{ color: '#7C3AED' }}>*</span>
-                          </label>
-                          <input id="contact-name" required value={form.name} onChange={e => set('name', e.target.value)}
-                            className="form-input text-center" placeholder=""
-                            style={errors.name ? { borderColor: '#ef4444' } : {}}
-                            aria-describedby={errors.name ? 'name-err' : undefined}
-                          />
-                          {errors.name && <p id="name-err" role="alert" className="text-xs mt-1" style={{ color: '#ef4444' }}>{errors.name}</p>}
+                          <div className="premium-input-container">
+                            <input 
+                              id="contact-name" 
+                              required 
+                              value={form.name} 
+                              onChange={e => set('name', e.target.value)}
+                              placeholder=" "
+                              className={`w-full pl-12 pr-4 h-[58px] rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:border-blue-600 focus:ring-2 focus:ring-blue-600/30 transition-all text-base ${errors.name ? 'border-rose-400 focus:border-rose-500 focus:ring-rose-500/25' : ''}`}
+                              aria-describedby={errors.name ? 'name-err' : undefined}
+                            />
+                            <FiUser className="absolute left-4 top-[18px] text-slate-400 dark:text-slate-500 text-xl pointer-events-none" />
+                          </div>
+                          {errors.name && <p id="name-err" role="alert" className="text-xs mt-1.5 pl-2 font-bold text-rose-500 uppercase tracking-wide">{errors.name}</p>}
                         </div>
                         <div>
-                          <label htmlFor="contact-email" className="block text-sm font-semibold mb-1.5 tracking-wide" style={{ color: '#0f172a' }}>
-                            Email <span style={{ color: '#7C3AED' }}>*</span>
-                          </label>
-                          <input id="contact-email" type="email" required value={form.email} onChange={e => set('email', e.target.value)}
-                            className="form-input text-center" placeholder=""
-                            style={errors.email ? { borderColor: '#ef4444' } : {}}
-                            aria-describedby={errors.email ? 'email-err' : undefined}
-                          />
-                          {errors.email && <p id="email-err" role="alert" className="text-xs mt-1" style={{ color: '#ef4444' }}>{errors.email}</p>}
+                          <div className="premium-input-container">
+                            <input 
+                              id="contact-email" 
+                              type="email" 
+                              required 
+                              value={form.email} 
+                              onChange={e => set('email', e.target.value)}
+                              placeholder=" "
+                              className={`w-full pl-12 pr-4 h-[58px] rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:border-blue-600 focus:ring-2 focus:ring-blue-600/30 transition-all text-base ${errors.email ? 'border-rose-400 focus:border-rose-500 focus:ring-rose-500/25' : ''}`}
+                              aria-describedby={errors.email ? 'email-err' : undefined}
+                            />
+                            <FiMail className="absolute left-4 top-[18px] text-slate-400 dark:text-slate-500 text-xl pointer-events-none" />
+                          </div>
+                          {errors.email && <p id="email-err" role="alert" className="text-xs mt-1.5 pl-2 font-bold text-rose-500 uppercase tracking-wide">{errors.email}</p>}
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-4 mb-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                         <div>
-                          <label htmlFor="contact-phone" className="block text-sm font-semibold mb-1.5 tracking-wide" style={{ color: '#0f172a' }}>Phone</label>
-                          <input id="contact-phone" type="tel" value={form.phone} onChange={e => set('phone', e.target.value)}
-                            className="form-input text-center" placeholder="" />
+                          <div className="premium-input-container">
+                            <input 
+                              id="contact-phone" 
+                              type="tel" 
+                              value={form.phone} 
+                              onChange={e => set('phone', e.target.value)}
+                              placeholder=" "
+                              className="w-full pl-12 pr-4 h-[58px] rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:border-blue-600 focus:ring-2 focus:ring-blue-600/30 transition-all text-base"
+                            />
+                            <FiPhone className="absolute left-4 top-[18px] text-slate-400 dark:text-slate-500 text-xl pointer-events-none" />
+                          </div>
                         </div>
+                        
                         <div>
-                          <label htmlFor="contact-subject" className="block text-sm font-semibold mb-1.5 tracking-wide" style={{ color: '#0f172a' }}>Subject</label>
-                          <select id="contact-subject" value={form.subject} onChange={e => set('subject', e.target.value)} className="form-input text-center">
-                            <option value="">Select subject</option>
-                            <option>Tour Inquiry</option>
-                            <option>Custom Package</option>
-                            <option>Booking Support</option>
-                            <option>Visa Assistance</option>
-                            <option>Other</option>
+                          <select 
+                            id="contact-subject" 
+                            value={form.subject} 
+                            onChange={e => set('subject', e.target.value)}
+                            className="w-full h-[58px] px-4 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:border-blue-600 focus:ring-2 focus:ring-blue-600/30 transition-all text-base font-medium cursor-pointer"
+                          >
+                            <option value="">Select Category</option>
+                            <option value="Tour Inquiry">Tour Inquiry</option>
+                            <option value="Custom Package">Custom Package</option>
+                            <option value="Booking Support">Booking Support</option>
+                            <option value="Visa Assistance">Visa Assistance</option>
+                            <option value="Other">Other</option>
                           </select>
                         </div>
                       </div>
 
-                      <div className="mb-6">
-                        <label htmlFor="contact-message" className="block text-sm font-semibold mb-1.5 tracking-wide" style={{ color: '#0f172a' }}>
-                          Message <span style={{ color: '#7C3AED' }}>*</span>
-                        </label>
-                        <textarea id="contact-message" required rows={5} value={form.message} onChange={e => set('message', e.target.value)}
-                          className="form-input resize-none text-center" placeholder=""
-                          style={{ ...(errors.message ? { borderColor: '#ef4444' } : {}), paddingTop: '12px' }}
-                          aria-describedby={errors.message ? 'msg-err' : undefined}
-                        />
-                        {errors.message && <p id="msg-err" role="alert" className="text-xs mt-1" style={{ color: '#ef4444' }}>{errors.message}</p>}
+                      <div>
+                        <div className="relative">
+                          <textarea 
+                            id="contact-message" 
+                            required 
+                            rows={4} 
+                            value={form.message} 
+                            onChange={e => set('message', e.target.value)}
+                            placeholder="Write your custom travel requirements..."
+                            className="w-full pl-12 pr-4 py-4 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:border-blue-600 focus:ring-2 focus:ring-blue-600/30 transition-all resize-none text-base font-medium placeholder-slate-400 dark:placeholder-slate-500"
+                            style={{ borderColor: errors.message ? '#ef4444' : '' }}
+                            aria-describedby={errors.message ? 'msg-err' : undefined}
+                          />
+                          <FiMail className="absolute left-4 top-5 text-slate-400 dark:text-slate-500 text-xl pointer-events-none" />
+                        </div>
+                        {errors.message && <p id="msg-err" role="alert" className="text-xs mt-1.5 pl-2 font-bold text-rose-500 uppercase tracking-wide">{errors.message}</p>}
                       </div>
 
-                      <button type="submit" disabled={loading} className="btn-primary w-full justify-center py-4"
-                        style={{ width: '100%', fontSize: '0.9rem' }}>
-                        {loading ? 'Sending...' : <><FiSend size={16} /> Send Message</>}
+                      <button 
+                        type="submit" 
+                        disabled={loading} 
+                        className="btn-premium w-full mt-4 py-4 text-base font-bold tracking-wide cursor-pointer"
+                      >
+                        {loading ? 'Sending...' : <><FiSend size={15} /> Submit Inquiry Request</>}
                       </button>
                     </form>
 
-                    {/* WhatsApp CTA */}
-                    <a href="https://wa.me/911234567890" target="_blank" rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-3 mt-4 py-3.5 rounded-xl text-sm font-semibold transition-all"
-                      style={{ background: 'rgba(37,211,102,0.08)', border: '1.5px solid rgba(37,211,102,0.25)', color: '#16a34a' }}
-                      onMouseEnter={e => e.currentTarget.style.background = 'rgba(37,211,102,0.15)'}
-                      onMouseLeave={e => e.currentTarget.style.background = 'rgba(37,211,102,0.08)'}
+                    {/* WhatsApp CTA Link */}
+                    <a 
+                      href="https://wa.me/911234567890?text=Hi%20TravelGo!%20I'd%20like%2520to%20plan%20a%20bespoke%20trip." 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-2.5 mt-4 py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider border border-green-500/20 bg-green-500/5 hover:bg-green-500/10 text-green-600 dark:text-green-400 transition-colors"
                     >
-                      <FaWhatsapp size={18} /> Chat on WhatsApp — instant reply
+                      <FaWhatsapp size={16} /> WhatsApp Live Concierge
                     </a>
                   </>
                 )}
               </motion.div>
 
-              {/* Map */}
+              {/* Map Column */}
               <motion.div
-                initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, x: 20 }} 
+                whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                className="rounded-3xl overflow-hidden h-full"
-                style={{ minHeight: 480, boxShadow: '0 8px 32px rgba(10,25,47,0.10)' }}
+                className="rounded-[20px] overflow-hidden border border-slate-200/60 dark:border-slate-800 shadow-sm flex flex-col h-full min-h-[480px]"
               >
                 <MapContainer
-                  center={[19.0596, 72.8295]}
+                  center={[19.123, 72.911]}
                   zoom={15}
-                  style={{ height: '100%', minHeight: 480 }}
-                  aria-label="TravelGo office location map"
+                  style={{ height: '100%', flex: 1 }}
+                  aria-label="TravelGo location map"
                 >
                   <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     attribution='© OpenStreetMap contributors'
                   />
-                  <Marker position={[19.0596, 72.8295]}>
+                  <Marker position={[19.123, 72.911]}>
                     <Popup>
-                      <div style={{ fontFamily: 'DM Sans, sans-serif', padding: '4px' }}>
-                        <strong style={{ color: '#0f172a' }}>TravelGo HQ</strong><br />
-                        <span style={{ fontSize: 12, color: '#666' }}>123 Travel Street, Bandra West</span>
+                      <div className="p-1" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+                        <strong className="text-slate-900 font-bold text-sm">TravelGo HQ</strong><br />
+                        <span className="text-xs text-slate-550">IIT Bombay Campus Gate, Powai</span>
                       </div>
                     </Popup>
                   </Marker>
                 </MapContainer>
               </motion.div>
+
             </div>
+
           </div>
         </section>
 

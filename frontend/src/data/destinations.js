@@ -123,4 +123,28 @@ export const destinations = [
     image: 'https://images.unsplash.com/photo-1499678329028-101435549a4e?w=800&fit=crop&auto=format',
     description: 'Colorful cliffside villages, Mediterranean sea.',
   },
+  {
+    id: 16,
+    name: 'Tokyo',
+    country: 'Japan',
+    category: 'International',
+    image: 'https://images.unsplash.com/photo-1540959733332-eab4deceeaf7?w=800&fit=crop&auto=format',
+    description: 'Neon skyscrapers, traditional temples, and gourmet sushi.',
+  },
+  {
+    id: 17,
+    name: 'Cairo',
+    country: 'Egypt',
+    category: 'Cultural',
+    image: 'https://images.unsplash.com/photo-1503177119275-0aa32b31d468?w=800&fit=crop&auto=format',
+    description: 'Ancient pyramids, timeless deserts, and vibrant khan bazaars.',
+  },
+  {
+    id: 18,
+    name: 'Sydney',
+    country: 'Australia',
+    category: 'International',
+    image: 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=800&fit=crop&auto=format',
+    description: 'Spectacular harbor views, iconic Opera House, and coastal surf.',
+  },
 ];

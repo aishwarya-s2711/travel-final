@@ -1,163 +1,201 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaFacebook, FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa';
-import { FiMail, FiPhone, FiMapPin } from 'react-icons/fi';
+import { FiMail, FiPhone, FiMapPin, FiArrowUpRight, FiArrowUp, FiSend } from 'react-icons/fi';
 
 const SOCIALS = [
-  { Icon: FaFacebook,  href: 'https://facebook.com/travelgo',  label: 'Facebook' },
-  { Icon: FaInstagram, href: 'https://instagram.com/travelgo',  label: 'Instagram' },
-  { Icon: FaTwitter,   href: 'https://twitter.com/travelgo',    label: 'Twitter' },
-  { Icon: FaYoutube,   href: 'https://youtube.com/travelgo',    label: 'YouTube' },
+  { Icon: FaFacebook,  href: 'https://facebook.com/iitctravel',  label: 'Facebook' },
+  { Icon: FaInstagram, href: 'https://instagram.com/iitctravel',  label: 'Instagram' },
+  { Icon: FaTwitter,   href: 'https://twitter.com/iitctravel',    label: 'Twitter' },
+  { Icon: FaYoutube,   href: 'https://youtube.com/iitctravel',    label: 'YouTube' },
 ];
 
 export default function Footer() {
   const [email, setEmail] = useState('');
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
-    <footer style={{ background: 'linear-gradient(180deg, #0f172a 0%, #061020 100%)', color: 'rgba(255,255,255,0.72)' }}>
-      {/* Gold rule */}
-      <div style={{ height: 1, background: 'linear-gradient(90deg, transparent, rgba(124,58,237,0.55) 50%, transparent)' }} />
+    <footer className="bg-[#0B1F3A] text-white/70 border-t border-white/10 font-sans">
+      
+      {/* Premium CTA Strip */}
+      <div className="relative overflow-hidden bg-gradient-to-r from-[#D4A74F] to-[#E5C158]">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-3 relative z-10">
+          <div className="flex items-center gap-2 text-[#0B1F3A]">
+            <div className="w-2 h-2 rounded-full bg-[#0B1F3A] animate-pulse" />
+            <p className="text-sm font-bold tracking-tight">
+              Start your journey today — <span>Talk to our travel experts</span>
+            </p>
+          </div>
+          <Link
+            to="/contact"
+            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-[11px] font-bold uppercase tracking-widest text-white bg-[#0B1F3A] hover:bg-[#152a4a] shadow-lg transition-all duration-300 hover:-translate-y-0.5"
+          >
+            Get Started
+            <FiArrowUpRight size={14} />
+          </Link>
+        </div>
+      </div>
 
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-16 lg:py-20">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-8">
+      {/* Main Footer Container */}
+      <div className="max-w-7xl mx-auto px-6 py-20 lg:py-24">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-8">
 
-          {/* Brand */}
-          <div className="lg:col-span-2">
-            <Link to="/" className="flex items-center gap-3 mb-5 group w-fit" aria-label="TravelGo Home">
-              <div className="w-12 h-12 rounded-[12px] flex items-center justify-center transition-all duration-300 shadow-md group-hover:shadow-lg group-hover:-translate-y-0.5"
-                style={{ background: 'linear-gradient(135deg, #7C3AED 0%, #2563EB 100%)' }}>
-                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-7 h-7 text-white">
-                  <path d="M12 2C8.134 2 5 5.134 5 9C5 14.25 12 22 12 22C12 22 19 14.25 19 9C19 5.134 15.866 2 12 2Z" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
-                  <circle cx="12" cy="9" r="2.5" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+          {/* Brand & Mission column */}
+          <div className="lg:col-span-2 space-y-6">
+            <Link to="/" className="flex items-center gap-3 group w-fit" aria-label="TravelGo Home">
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-gradient-to-br from-[#D4A74F] to-[#E5C158] shadow-md group-hover:shadow-lg group-hover:-translate-y-0.5 transition-all duration-300">
+                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-7 h-7">
+                  <path d="M24 6C18.268 6 13 11.268 13 18C13 26 24 38 24 38C24 38 35 26 35 18C35 11.268 29.732 6 24 6Z" fill="white" opacity="0.95"/>
                 </svg>
               </div>
-              <div className="flex flex-col leading-none">
-                <span className="text-2xl font-black text-white tracking-tight" style={{ fontFamily: 'Inter, sans-serif', letterSpacing: '-0.03em' }}>TravelGo</span>
-                <span className="text-[9px] font-semibold tracking-[0.12em] uppercase mt-1" style={{ color: '#7C3AED' }}>Explore. Discover. Experience</span>
+              <div className="flex flex-col">
+                <span className="text-2xl font-black text-white tracking-tight leading-none mb-0.5">
+                  TravelGo
+                </span>
+                <span className="text-[9px] font-extrabold tracking-[0.2em] uppercase text-[#D4A74F]">
+                  Premium travel agency
+                </span>
               </div>
             </Link>
 
-            <p className="text-sm leading-relaxed mb-6 max-w-xs" style={{ color: 'rgba(255,255,255,0.55)', fontFamily: 'DM Sans, sans-serif' }}>
-              We create unforgettable travel experiences with premium services and best prices.
+            <p className="text-sm leading-relaxed max-w-sm text-white/60">
+              Bespoke travel designers crafting hyper-curated, luxury tour itineraries. From 5★ boutique hotels to local guides and 24/7 concierge assistance, we guarantee excellence.
             </p>
 
-            <div className="flex gap-2.5 mb-8">
+            {/* Social Icons */}
+            <div className="flex items-center gap-3 pt-2">
               {SOCIALS.map(({ Icon, href, label }) => (
-                <a key={label} href={href} target="_blank" rel="noopener noreferrer"
+                <a 
+                  key={label} 
+                  href={href} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
                   aria-label={label}
-                  className="w-9 h-9 rounded-lg flex items-center justify-center transition-all duration-300"
-                  style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.10)' }}
-                  onMouseEnter={e => { e.currentTarget.style.background = 'linear-gradient(135deg, #7C3AED, #2563EB)'; e.currentTarget.style.borderColor = '#7C3AED'; e.currentTarget.style.transform = 'translateY(-3px)'; }}
-                  onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.06)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.10)'; e.currentTarget.style.transform = 'none'; }}
+                  className="w-10 h-10 rounded-full flex items-center justify-center bg-white/5 border border-white/10 hover:border-[#D4A74F] text-white/70 hover:text-[#D4A74F] transition-all duration-300 hover:-translate-y-1 hover:bg-white/10"
                 >
-                  <Icon size={14} color="#fff" />
+                  <Icon size={16} />
                 </a>
               ))}
             </div>
           </div>
 
-          {/* Quick Links */}
-          <nav aria-label="Quick links">
-            <h3 className="text-xs font-black tracking-[0.12em] uppercase mb-5" style={{ color: '#7C3AED', fontFamily: 'DM Sans, sans-serif' }}>
+          {/* Quick Links Column */}
+          <div className="space-y-6">
+            <h3 className="text-lg font-bold tracking-wide text-white">
               Quick Links
             </h3>
-            <ul className="space-y-2.5">
-              {[['Home','/'],['Packages','/packages'],['Destinations','/destinations'],['Track Trip','/track'],['About Us','/about'],['Contact','/contact']].map(([label, path]) => (
+            <ul className="space-y-3">
+              {[
+                ['Home', '/'],
+                ['Packages', '/packages'],
+                ['Destinations', '/destinations'],
+                ['Track Trip', '/track-trip'],
+                ['About Us', '/about'],
+                ['Contact', '/contact']
+              ].map(([label, path]) => (
                 <li key={path}>
-                  <Link to={path} className="group flex items-center gap-2 text-sm transition-all duration-300"
-                    style={{ color: 'rgba(255,255,255,0.70)', fontFamily: 'DM Sans, sans-serif' }}
+                  <Link 
+                    to={path} 
+                    className="text-sm text-white/60 hover:text-[#D4A74F] transition-colors"
                   >
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#7C3AED] opacity-0 group-hover:opacity-100 transition-opacity" />
-                    <span className="group-hover:text-[#2563EB] group-hover:translate-x-1 transition-all">{label}</span>
+                    {label}
                   </Link>
                 </li>
               ))}
             </ul>
-          </nav>
-
-          {/* Top Destinations */}
-          <nav aria-label="Top destinations">
-            <h3 className="text-xs font-black tracking-[0.12em] uppercase mb-5" style={{ color: '#7C3AED', fontFamily: 'DM Sans, sans-serif' }}>
-              Top Destinations
-            </h3>
-            <ul className="space-y-2.5">
-              {['Maldives','Bali','Switzerland','Dubai','Thailand','Singapore'].map(d => (
-                <li key={d}>
-                  <Link to="/destinations" className="group flex items-center gap-2 text-sm transition-all duration-300"
-                    style={{ color: 'rgba(255,255,255,0.70)', fontFamily: 'DM Sans, sans-serif' }}
-                  >
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#7C3AED] opacity-0 group-hover:opacity-100 transition-opacity" />
-                    <span className="group-hover:text-[#2563EB] group-hover:translate-x-1 transition-all">{d}</span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
-          {/* Contact + Newsletter */}
-          <div>
-            <h3 className="text-xs font-black tracking-[0.12em] uppercase mb-5" style={{ color: '#7C3AED', fontFamily: 'DM Sans, sans-serif' }}>
-              Contact Us
-            </h3>
-            <ul className="space-y-3 mb-7">
-              <li className="flex gap-2.5 items-start text-sm" style={{ color: 'rgba(255,255,255,0.65)' }}>
-                <FiPhone size={13} className="shrink-0 mt-0.5" style={{ color: '#7C3AED' }} />
-                <a href="tel:+18881234567" className="hover:text-[#2563EB] transition-colors">+1 (888) 123-4567</a>
-              </li>
-              <li className="flex gap-2.5 items-start text-sm" style={{ color: 'rgba(255,255,255,0.65)' }}>
-                <FiMail size={13} className="shrink-0 mt-0.5" style={{ color: '#7C3AED' }} />
-                <a href="mailto:info@travelgo.com" className="hover:text-[#2563EB] transition-colors">info@travelgo.com</a>
-              </li>
-              <li className="flex gap-2.5 items-start text-sm" style={{ color: 'rgba(255,255,255,0.65)' }}>
-                <FiMapPin size={13} className="shrink-0 mt-0.5" style={{ color: '#7C3AED' }} />
-                <span>123 Travel Street,<br />New York, USA 10001</span>
-              </li>
-            </ul>
-
-            {/* Newsletter */}
-            <h3 className="text-xs font-black tracking-[0.12em] uppercase mb-3" style={{ color: '#7C3AED', fontFamily: 'DM Sans, sans-serif' }}>
-              Newsletter
-            </h3>
-            <p className="text-xs mb-3" style={{ color: 'rgba(255,255,255,0.50)' }}>
-              Subscribe to get special offers, travel tips & more!
-            </p>
-            <form onSubmit={e => e.preventDefault()} className="flex flex-col gap-2">
-              <input
-                type="email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                placeholder=""
-                className="w-full px-4 py-2.5 rounded-lg text-sm outline-none"
-                style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.14)', color: '#fff', fontFamily: 'DM Sans, sans-serif' }}
-                onFocus={e => { e.currentTarget.style.borderColor = '#7C3AED'; e.currentTarget.style.boxShadow = '0 0 0 2px rgba(124,58,237,0.18)'; }}
-                onBlur={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.14)'; e.currentTarget.style.boxShadow = 'none'; }}
-                required
-              />
-              <button type="submit"
-                className="w-full py-2.5 rounded-lg text-sm font-bold transition-all duration-300"
-                style={{ background: 'linear-gradient(135deg, #7C3AED, #2563EB)', color: '#0f172a', fontFamily: 'DM Sans, sans-serif' }}
-                onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-1px)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(124,58,237,0.40)'; }}
-                onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; }}
-              >
-                Subscribe
-              </button>
-            </form>
           </div>
+
+          {/* Core Destinations Column */}
+          <div className="space-y-6">
+            <h3 className="text-lg font-bold tracking-wide text-white">
+              Destinations
+            </h3>
+            <ul className="space-y-3">
+              {['Maldives', 'Bali', 'Switzerland', 'Dubai', 'Greece', 'Singapore'].map(d => (
+                <li key={d}>
+                  <Link 
+                    to={`/destinations?search=${d.toLowerCase()}`} 
+                    className="text-sm text-white/60 hover:text-[#D4A74F] transition-colors"
+                  >
+                    {d}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Contact Details & Newsletter */}
+          <div className="space-y-6">
+            <h3 className="text-lg font-bold tracking-wide text-white">
+              Contact
+            </h3>
+            <ul className="space-y-4 text-sm text-white/60">
+              <li className="flex gap-3 items-start">
+                <FiPhone size={16} className="shrink-0 mt-0.5 text-[#D4A74F]" />
+                <a href="tel:+912225722545" className="hover:text-white transition-colors">+91 (22) 2572-2545</a>
+              </li>
+              <li className="flex gap-3 items-start">
+                <FiMail size={16} className="shrink-0 mt-0.5 text-[#D4A74F]" />
+                <a href="mailto:hello@iitctravel.com" className="hover:text-white transition-colors">hello@iitctravel.com</a>
+              </li>
+              <li className="flex gap-3 items-start">
+                <FiMapPin size={16} className="shrink-0 mt-0.5 text-[#D4A74F]" />
+                <span>IIT Campus Powai, Mumbai, Maharashtra 400076</span>
+              </li>
+            </ul>
+
+            {/* Newsletter Section */}
+            <div className="border-t border-white/10 pt-6 space-y-3">
+              <p className="text-xs uppercase font-bold tracking-widest text-white/80">Subscribe for Privileges</p>
+              <form onSubmit={e => e.preventDefault()} className="flex gap-2">
+                <div className="relative flex-1">
+                  <FiMail size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none" />
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    placeholder="Your Email"
+                    className="w-full pl-10 pr-4 py-3 text-sm rounded-xl bg-white/5 border border-white/10 text-white outline-none focus:border-[#D4A74F] focus:ring-1 focus:ring-[#D4A74F]/50 placeholder-white/30 transition-all"
+                    required
+                  />
+                </div>
+                <button 
+                  type="submit"
+                  className="px-5 py-3 rounded-xl text-xs font-bold uppercase tracking-wider text-[#0B1F3A] bg-[#D4A74F] hover:bg-[#E5C158] shadow-md hover:shadow-lg transition-all duration-300 flex items-center justify-center"
+                >
+                  <FiSend size={14} />
+                </button>
+              </form>
+            </div>
+          </div>
+
         </div>
       </div>
 
-      {/* Bottom bar */}
-      <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-5 flex flex-col sm:flex-row items-center justify-between gap-3"
-          style={{ fontSize: '0.8125rem', color: 'rgba(255,255,255,0.42)', fontFamily: 'DM Sans, sans-serif' }}>
-          <p>© {new Date().getFullYear()} TravelGo. All Rights Reserved.</p>
-          <div className="flex gap-6">
-            {[['Privacy Policy','/privacy'],['Terms & Conditions','/terms'],['Refund Policy','/faq']].map(([title, link]) => (
-              <Link key={title} to={link} className="transition-colors duration-200 hover:text-[#2563EB]">{title}</Link>
+      {/* Footer Copyright Bottom Bar */}
+      <div className="border-t border-white/10 bg-black/20 py-6">
+        <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-medium text-white/50">
+          <p>© {new Date().getFullYear()} TravelGo. Premium Travel Agency.</p>
+          <div className="flex items-center gap-6">
+            {[['Privacy Policy', '/privacy'], ['Terms & Conditions', '/terms'], ['FAQ', '/faq']].map(([title, link]) => (
+              <Link key={title} to={link} className="hover:text-[#D4A74F] transition-colors">{title}</Link>
             ))}
           </div>
         </div>
       </div>
+
+      {/* Scroll to Top Button */}
+      <button 
+        onClick={scrollToTop}
+        className="fixed bottom-6 right-6 w-12 h-12 rounded-full bg-[#0B1F3A] border border-[#D4A74F] text-[#D4A74F] flex items-center justify-center shadow-xl hover:bg-[#D4A74F] hover:text-[#0B1F3A] transition-all duration-300 z-50 group hover:-translate-y-1"
+        aria-label="Scroll to top"
+      >
+        <FiArrowUp size={20} className="group-hover:animate-bounce" />
+      </button>
+
     </footer>
   );
 }

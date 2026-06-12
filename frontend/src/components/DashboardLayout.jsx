@@ -2,11 +2,12 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
-import { FiMenu, FiX, FiBell, FiSearch, FiUser, FiLogOut, FiSun, FiMoon, FiHome } from 'react-icons/fi';
+import { FiMenu, FiX, FiBell, FiSearch, FiUser, FiLogOut, FiSun, FiMoon, FiHome, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 
 export default function DashboardLayout({ children, sidebarLinks }) {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [profileOpen, setProfileOpen] = useState(false);
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const [darkMode, setDarkMode] = useState(() => {
     return localStorage.getItem('tg_theme') === 'dark' || document.documentElement.classList.contains('dark');
   });
@@ -40,7 +41,13 @@ export default function DashboardLayout({ children, sidebarLinks }) {
     navigate('/');
   };
 
-  // Extract page title from route
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/destinations?search=${searchQuery.toLowerCase()}`);
+    }
+  };
+
   const activeLink = sidebarLinks.find(link => 
     link.path === '/admin/dashboard' || link.path === '/dashboard'
       ? location.pathname === link.path
@@ -49,110 +56,146 @@ export default function DashboardLayout({ children, sidebarLinks }) {
   const pageTitle = activeLink ? activeLink.label : 'Dashboard';
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#f8fafc]">
-      {/* Top Header */}
-      <header className="h-20 bg-[#0f172a] text-white flex items-center justify-between px-6 sticky top-0 z-50 shadow-md">
-        {/* Left: Logo */}
-        <Link to="/" className="flex items-center gap-3 group">
-          <div className="w-10 h-10 rounded-[10px] flex items-center justify-center transition-transform shadow-md group-hover:scale-105" style={{ background: 'linear-gradient(135deg, #7C3AED, #2563EB)' }}>
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 text-white">
-              <path d="M12 2C8.134 2 5 5.134 5 9C5 14.25 12 22 12 22C12 22 19 14.25 19 9C19 5.134 15.866 2 12 2Z" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
-              <circle cx="12" cy="9" r="2.5" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </div>
-          <span className="font-black tracking-tight text-2xl text-white hidden sm:block" style={{ fontFamily: 'Inter, sans-serif', letterSpacing: '-0.03em' }}>TravelGo</span>
-        </Link>
-
-        {/* Right: Actions */}
-        <div className="flex items-center gap-4">
-          <div className="hidden md:flex items-center gap-3 mr-4">
-            <Link to="/" title="Back to Home" className="p-2.5 text-slate-300 hover:bg-white/10 hover:text-white rounded-full transition-colors flex items-center justify-center">
-              <FiHome size={20} />
-            </Link>
-            <button onClick={toggleDarkMode} className="p-2.5 text-slate-300 hover:bg-white/10 hover:text-white rounded-full transition-colors">
-              {darkMode ? <FiSun size={20} className="text-amber-400" /> : <FiMoon size={20} />}
-            </button>
-            <button className="relative p-2.5 text-slate-300 hover:bg-white/10 hover:text-white rounded-full transition-colors group">
-              <FiBell size={20} />
-              <span className="absolute top-2 right-2.5 w-2 h-2 bg-red-500 rounded-full border-2 border-[#0f172a] shadow-sm"></span>
-            </button>
-            
-            {/* Profile Info */}
-            <div className="flex items-center gap-3 ml-2 border-l border-white/20 pl-4">
-              <div className="text-right">
-                <p className="text-sm font-bold text-white leading-none">{user?.name?.split(' ')[0] || 'Admin'}</p>
-                <p className="text-[11px] font-medium text-slate-400 mt-1 uppercase tracking-wider">{user?.role || 'User'}</p>
-              </div>
-              <div className="w-9 h-9 rounded-lg flex items-center justify-center text-white text-sm font-bold shadow-inner" style={{ background: 'linear-gradient(135deg, #8b5cf6, #7C3AED)' }}>
-                {user?.name?.[0]?.toUpperCase() || 'A'}
-              </div>
+    <div className="min-h-screen flex bg-[#F8FAFC] text-[#0F172A] dark:text-slate-100 font-sans">
+      
+      {/* 1. Persistent Sidebar - Desktop Only (Minimalist Pure White Design) */}
+      <aside 
+        className={`hidden lg:flex flex-col h-screen bg-white dark:bg-slate-900 border-r border-[#E2E8F0] dark:border-slate-800 transition-all duration-300 shrink-0 ${
+          isCollapsed ? 'w-20' : 'w-64'
+        }`}
+      >
+        {/* Logo area */}
+        <div className="h-20 flex items-center justify-between px-6 border-b border-[#E2E8F0] dark:border-slate-800 shrink-0">
+          <Link to="/" className="flex items-center gap-3 overflow-hidden">
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-[#2563EB] shadow-sm shrink-0">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-white">
+                <path d="M12 2C8.134 2 5 5.134 5 9C5 14.25 12 22 12 22C12 22 19 14.25 19 9C19 5.134 15.866 2 12 2Z" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+                <circle cx="12" cy="9" r="2.5" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
             </div>
-          </div>
-
-          {/* Hamburger Menu Button */}
-          <button 
-            className="p-2 text-white hover:bg-white/10 rounded-lg transition-colors flex items-center justify-center gap-2" 
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-          >
-            {sidebarOpen ? <FiX size={28} /> : <FiMenu size={28} />}
-          </button>
+            {!isCollapsed && (
+              <span className="font-semibold text-base text-[#0F172A] dark:text-white tracking-tight">TravelGo</span>
+            )}
+          </Link>
+          
+          {!isCollapsed && (
+            <button 
+              onClick={() => setIsCollapsed(true)}
+              className="p-1 rounded-md text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800"
+            >
+              <FiChevronLeft size={16} />
+            </button>
+          )}
         </div>
-      </header>
 
-      {/* Dropdown Menu Overlay */}
+        {/* Sidebar Nav links */}
+        <nav className="flex-1 px-3 py-6 space-y-1 overflow-y-auto">
+          {sidebarLinks.map((link) => {
+            const active = link.path === '/admin/dashboard' || link.path === '/dashboard'
+              ? location.pathname === link.path
+              : location.pathname === link.path || location.pathname.startsWith(link.path + '/');
+            return (
+              <Link
+                key={link.path}
+                to={link.path}
+                title={isCollapsed ? link.label : ''}
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all ${
+                  active 
+                    ? 'bg-blue-50/70 text-[#2563EB] dark:bg-slate-800 font-semibold border-l-4 border-[#2563EB] rounded-l-none' 
+                    : 'text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/60 hover:text-[#0F172A] dark:hover:text-white'
+                }`}
+              >
+                <link.icon size={18} className={`shrink-0 ${active ? 'text-[#2563EB]' : 'text-slate-400'}`} />
+                {!isCollapsed && <span>{link.label}</span>}
+              </Link>
+            );
+          })}
+        </nav>
+
+        {/* Sidebar Footer */}
+        <div className="p-4 border-t border-[#E2E8F0] dark:border-slate-800 flex flex-col gap-2 shrink-0">
+          {isCollapsed ? (
+            <button 
+              onClick={() => setIsCollapsed(false)}
+              className="flex justify-center p-2 rounded-xl text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800"
+            >
+              <FiChevronRight size={18} />
+            </button>
+          ) : (
+            <button 
+              onClick={handleLogout}
+              className="flex items-center gap-3 px-3.5 py-2.5 w-full rounded-xl text-sm font-semibold text-slate-500 hover:text-red-650 hover:bg-red-50/30 dark:hover:bg-red-950/10 transition-all"
+            >
+              <FiLogOut size={18} className="shrink-0 text-slate-400" />
+              <span>Sign Out</span>
+            </button>
+          )}
+        </div>
+      </aside>
+
+      {/* Mobile Sidebar */}
       <AnimatePresence>
-        {sidebarOpen && (
+        {mobileSidebarOpen && (
           <>
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => setSidebarOpen(false)}
-              className="fixed inset-0 bg-[#0f172a]/40 backdrop-blur-sm z-30"
-              style={{ top: '80px' }}
+              onClick={() => setMobileSidebarOpen(false)}
+              className="fixed inset-0 bg-slate-950/40 backdrop-blur-xs z-40 lg:hidden"
             />
             <motion.div
-              initial={{ opacity: 0, y: -10, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -10, scale: 0.95 }}
-              transition={{ duration: 0.2 }}
-              className="absolute right-4 md:right-6 top-24 bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-slate-100 dark:border-slate-700 py-3 z-40 w-64 overflow-hidden"
+              initial={{ x: '-100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '-100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 205 }}
+              className="fixed inset-y-0 left-0 w-64 bg-white dark:bg-slate-900 z-50 p-6 flex flex-col lg:hidden border-r border-[#E2E8F0] dark:border-slate-800"
             >
-              <div className="px-4 pb-3 mb-2 border-b border-slate-100 dark:border-slate-700 md:hidden">
-                <p className="text-sm font-bold text-slate-800 dark:text-white">{user?.name || 'Administrator'}</p>
-                <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mt-0.5">{user?.email || 'admin@travelgo.com'}</p>
+              <div className="flex items-center justify-between mb-8">
+                <Link to="/" className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-[#2563EB] text-white">
+                    <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 2C8.134 2 5 5.134 5 9C5 14.25 12 22 12 22C12 22 19 14.25 19 9C19 5.134 15.866 2 12 2Z" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+                      <circle cx="12" cy="9" r="2.5" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </div>
+                  <span className="font-semibold text-base text-[#0F172A] dark:text-white">TravelGo</span>
+                </Link>
+                <button 
+                  onClick={() => setMobileSidebarOpen(false)} 
+                  className="p-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500"
+                >
+                  <FiX size={18} />
+                </button>
               </div>
 
-              <div className="px-2">
-                <p className="px-3 text-[10px] font-black tracking-[0.15em] text-slate-400 dark:text-slate-500 uppercase mb-2 mt-1">Menu</p>
-                <nav className="space-y-1">
-                  {sidebarLinks.map((link) => {
-                    const active = link.path === '/admin/dashboard' || link.path === '/dashboard'
-                      ? location.pathname === link.path
-                      : location.pathname === link.path || location.pathname.startsWith(link.path + '/');
-                    return (
-                      <Link
-                        key={link.path}
-                        to={link.path}
-                        className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${
-                          active 
-                            ? 'bg-[#7C3AED]/10 text-[#7C3AED] dark:bg-[#7C3AED]/20 dark:text-[#a78bfa]' 
-                            : 'text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white hover:translate-x-1'
-                        }`}
-                        onClick={() => setSidebarOpen(false)}
-                      >
-                        <link.icon size={18} className={`${active ? 'text-[#7C3AED] dark:text-[#a78bfa]' : 'text-slate-400 dark:text-slate-500'}`} />
-                        {link.label}
-                      </Link>
-                    );
-                  })}
-                </nav>
-              </div>
+              <nav className="flex-1 space-y-1">
+                {sidebarLinks.map((link) => {
+                  const active = link.path === '/admin/dashboard' || link.path === '/dashboard'
+                    ? location.pathname === link.path
+                    : location.pathname === link.path || location.pathname.startsWith(link.path + '/');
+                  return (
+                    <Link
+                      key={link.path}
+                      to={link.path}
+                      className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all ${
+                        active 
+                          ? 'bg-blue-50 text-[#2563EB] dark:bg-slate-800' 
+                          : 'text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
+                      }`}
+                      onClick={() => setMobileSidebarOpen(false)}
+                    >
+                      <link.icon size={18} />
+                      {link.label}
+                    </Link>
+                  );
+                })}
+              </nav>
 
-              <div className="px-2 mt-2 pt-2 border-t border-slate-100 dark:border-slate-700">
+              <div className="pt-4 border-t border-[#E2E8F0] dark:border-slate-800">
                 <button 
                   onClick={handleLogout}
-                  className="flex items-center gap-3 px-3 py-2.5 w-full rounded-xl text-sm font-semibold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 transition-all duration-300"
+                  className="flex items-center gap-3 px-4 py-2.5 w-full rounded-xl text-sm font-semibold text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800"
                 >
                   <FiLogOut size={18} />
                   Sign Out
@@ -163,40 +206,72 @@ export default function DashboardLayout({ children, sidebarLinks }) {
         )}
       </AnimatePresence>
 
-      {/* Main Content */}
-      <main className="flex-1 flex flex-col min-w-0 overflow-hidden bg-slate-50 dark:bg-slate-900 transition-colors">
-        {/* Page Title Header (Desktop Only) */}
-        <div className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-6 py-4 flex items-center justify-between hidden md:flex sticky top-0 z-10">
-          <div>
-            <h2 className="text-xl font-bold text-slate-800 dark:text-white" style={{ fontFamily: 'Inter, sans-serif' }}>{pageTitle}</h2>
-            <div className="flex items-center gap-2 text-xs font-medium text-slate-400 mt-0.5">
-              <span>Home</span>
-              <span className="w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-600"></span>
-              <span className="text-[#7C3AED] dark:text-[#a78bfa]">{pageTitle}</span>
+      {/* 2. Main Area */}
+      <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
+        
+        {/* Top Navbar Header */}
+        <header className="h-20 bg-white dark:bg-slate-800 border-b border-[#E2E8F0] dark:border-slate-800 flex items-center justify-between px-6 shrink-0 z-20">
+          
+          <div className="flex items-center gap-4 flex-1">
+            <button 
+              className="lg:hidden p-2 -ml-2 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700/50"
+              onClick={() => setMobileSidebarOpen(true)}
+            >
+              <FiMenu size={24} />
+            </button>
+
+            {/* Search destinations bar */}
+            <form onSubmit={handleSearchSubmit} className="relative group hidden md:block w-72">
+              <FiSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[#2563EB] transition-colors" size={16} />
+              <input 
+                type="text" 
+                placeholder="Search destinations..." 
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                className="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-slate-900 border border-[#E2E8F0] dark:border-slate-800 rounded-xl text-xs focus:outline-none focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500/30 transition-all font-medium text-slate-700 dark:text-slate-200"
+              />
+            </form>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <Link to="/" className="p-2 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700/50 rounded-full transition-all" title="Go to home page">
+              <FiHome size={18} />
+            </Link>
+            
+            <button onClick={toggleDarkMode} className="p-2 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700/50 rounded-full transition-all">
+              {darkMode ? <FiSun size={18} className="text-amber-500" /> : <FiMoon size={18} />}
+            </button>
+
+            <button className="relative p-2 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700/50 rounded-full transition-all">
+              <FiBell size={18} />
+              <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-[#2563EB] rounded-full border border-white"></span>
+            </button>
+
+            {/* Profile Pill */}
+            <div className="flex items-center gap-3 border-l border-[#E2E8F0] dark:border-slate-750 pl-4 ml-2">
+              <div className="text-right hidden sm:block">
+                <p className="text-xs font-semibold text-[#0F172A] dark:text-white leading-none">{user?.name || 'User'}</p>
+                <p className="text-[9px] text-slate-400 dark:text-slate-500 uppercase tracking-widest mt-1">{user?.role || 'Guest'}</p>
+              </div>
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white text-xs font-semibold bg-[#2563EB]">
+                {user?.name?.[0]?.toUpperCase() || 'U'}
+              </div>
             </div>
           </div>
-          <div className="relative group">
-            <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[#7C3AED] transition-colors" size={16} />
-            <input 
-              type="text" 
-              placeholder="" 
-              className="pl-9 pr-4 py-2 bg-slate-100/50 dark:bg-slate-700 border border-transparent rounded-lg text-sm focus:outline-none focus:bg-white dark:focus:bg-slate-800 focus:border-[#7C3AED]/30 focus:ring-4 focus:ring-[#7C3AED]/10 transition-all w-64 placeholder:text-slate-400 dark:text-white font-medium"
-            />
-          </div>
-        </div>
+        </header>
 
-        {/* Scrollable Page Content */}
-        <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 custom-scrollbar">
+        {/* Core Dashboard Content */}
+        <main className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 bg-[#F8FAFC] dark:bg-slate-900/40">
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
-            className="mx-auto max-w-7xl"
+            className="mx-auto max-w-6xl"
           >
             {children}
           </motion.div>
-        </div>
-      </main>
+        </main>
+      </div>
     </div>
   );
 }

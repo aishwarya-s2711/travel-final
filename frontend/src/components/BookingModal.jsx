@@ -178,38 +178,38 @@ export default function BookingModal({ isOpen, onClose, pkg }) {
                 className="absolute top-6 right-6 w-10 h-10 rounded-full flex items-center justify-center transition-all hover:bg-slate-100"
                 aria-label="Close modal"
               >
-                <FiX size={20} className="text-slate-600" />
+                <FiX size={20} className="text-slate-650" />
               </button>
 
               <div className="p-8">
                 <div className="mb-6">
-                  <h2 className="text-3xl font-light mb-2" style={{ fontFamily: 'Inter, sans-serif', color: '#0f172a' }}>
+                  <h2 className="text-3xl font-extrabold mb-1.5 text-slate-900 dark:text-white" style={{ fontFamily: 'Outfit, sans-serif' }}>
                     Book Your Journey
                   </h2>
-                  <p className="text-sm text-slate-600">{pkg.title} - {pkg.destination}</p>
-                  <p className="text-lg font-semibold mt-2" style={{ color: '#7C3AED' }}>
-                    ${pkg.price?.toLocaleString()} per person
+                  <p className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">{pkg.title} - {pkg.destination}</p>
+                  <p className="text-xl font-extrabold mt-3" style={{ color: 'var(--primary)' }}>
+                    ${pkg.price?.toLocaleString()} <span className="text-xs font-semibold text-slate-450">per person</span>
                   </p>
                 </div>
 
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-5">
                   {user && (
-                    <div className="bg-[#7C3AED]/10 border border-[#7C3AED]/20 rounded-xl p-4 mb-4">
-                      <p className="text-sm text-[#7C3AED]"><span className="font-semibold">Booking as:</span> {user.name} ({user.email})</p>
+                    <div className="bg-blue-50/50 dark:bg-blue-950/20 border border-blue-200/20 dark:border-blue-900/30 rounded-2xl p-4 mb-4">
+                      <p className="text-xs font-semibold text-blue-600 dark:text-blue-400"><span className="font-bold uppercase tracking-wider mr-2">Booking as:</span> {user.name} ({user.email})</p>
                     </div>
                   )}
                   
                   {!isLoggedIn && (
-                    <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-4 flex items-center gap-3">
-                      <FiAlertCircle className="text-amber-600 flex-shrink-0" size={20} />
-                      <p className="text-sm text-amber-800">You need to login to book this package</p>
+                    <div className="bg-rose-50 dark:bg-rose-950/20 border border-rose-100 dark:border-rose-900/30 rounded-2xl p-4 mb-4 flex items-center gap-3">
+                      <FiAlertCircle className="text-rose-600 flex-shrink-0" size={20} />
+                      <p className="text-xs font-bold text-rose-800 dark:text-rose-300">You need to login to book this package</p>
                     </div>
                   )}
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
 
                     <div>
-                      <label className="block text-xs font-semibold mb-2 text-slate-700" htmlFor="travelDate">
+                      <label className="block text-[10px] font-extrabold uppercase tracking-widest mb-2 text-slate-450 dark:text-slate-500 pl-1" htmlFor="travelDate">
                         Travel Date *
                       </label>
                       <div className="relative">
@@ -220,14 +220,14 @@ export default function BookingModal({ isOpen, onClose, pkg }) {
                           required
                           value={form.travelDate}
                           onChange={(e) => handleInputChange('travelDate', e.target.value)}
-                          className={`w-full pl-11 pr-4 py-3 rounded-xl border ${
-                            errors.travelDate ? 'border-red-400 bg-red-50' : 'border-slate-200'
-                          } focus:outline-none focus:ring-2 focus:ring-amber-400/50 transition-all`}
+                          className={`w-full pl-11 pr-4 py-3.5 rounded-xl border text-slate-800 dark:text-slate-200 bg-white dark:bg-slate-900 ${
+                            errors.travelDate ? 'border-red-400 bg-red-50/25' : 'border-slate-200 dark:border-slate-700'
+                          } focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-600 transition-all text-xs font-bold`}
                           min={new Date().toISOString().split('T')[0]}
                         />
                       </div>
                       {errors.travelDate && (
-                        <p className="text-xs text-red-600 mt-1 flex items-center gap-1">
+                        <p className="text-[10px] font-bold text-red-650 mt-1.5 flex items-center gap-1.5 pl-1">
                           <FiAlertCircle size={12} />
                           {errors.travelDate}
                         </p>
@@ -235,7 +235,7 @@ export default function BookingModal({ isOpen, onClose, pkg }) {
                     </div>
 
                     <div>
-                      <label className="block text-xs font-semibold mb-2 text-slate-700" htmlFor="numberOfPeople">
+                      <label className="block text-[10px] font-extrabold uppercase tracking-widest mb-2 text-slate-450 dark:text-slate-500 pl-1" htmlFor="numberOfPeople">
                         Number of People *
                       </label>
                       <div className="relative">
@@ -248,13 +248,13 @@ export default function BookingModal({ isOpen, onClose, pkg }) {
                           required
                           value={form.numberOfPeople}
                           onChange={(e) => handleInputChange('numberOfPeople', parseInt(e.target.value) || 1)}
-                          className={`w-full pl-11 pr-4 py-3 rounded-xl border ${
-                            errors.numberOfPeople ? 'border-red-400 bg-red-50' : 'border-slate-200'
-                          } focus:outline-none focus:ring-2 focus:ring-amber-400/50 transition-all`}
+                          className={`w-full pl-11 pr-4 py-3.5 rounded-xl border text-slate-800 dark:text-slate-200 bg-white dark:bg-slate-900 ${
+                            errors.numberOfPeople ? 'border-red-400 bg-red-50/25' : 'border-slate-200 dark:border-slate-700'
+                          } focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-600 transition-all text-xs font-bold`}
                         />
                       </div>
                       {errors.numberOfPeople && (
-                        <p className="text-xs text-red-600 mt-1 flex items-center gap-1">
+                        <p className="text-[10px] font-bold text-red-650 mt-1.5 flex items-center gap-1.5 pl-1">
                           <FiAlertCircle size={12} />
                           {errors.numberOfPeople}
                         </p>
@@ -262,42 +262,42 @@ export default function BookingModal({ isOpen, onClose, pkg }) {
                     </div>
                     
                     <div className="md:col-span-2">
-                      <label className="block text-xs font-semibold mb-2 text-slate-700">
+                      <label className="block text-[10px] font-extrabold uppercase tracking-widest mb-2 text-slate-450 dark:text-slate-500 pl-1">
                         Total Amount
                       </label>
-                      <div className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 font-bold text-slate-900 text-center">
+                      <div className="w-full px-4 py-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950/40 font-extrabold text-slate-900 dark:text-white text-center text-lg">
                         ${(pkg.price * form.numberOfPeople).toLocaleString()}
                       </div>
-                      <p className="text-xs text-slate-500 mt-1 text-center">
+                      <p className="text-[10px] text-slate-400 dark:text-slate-500 mt-1.5 text-center font-semibold">
                         ${pkg.price?.toLocaleString()} × {form.numberOfPeople} person(s)
                       </p>
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold mb-2 text-slate-700" htmlFor="specialRequests">
+                    <label className="block text-[10px] font-extrabold uppercase tracking-widest mb-2 text-slate-455 dark:text-slate-500 pl-1" htmlFor="specialRequests">
                       Special Requests (Optional)
                     </label>
                     <textarea
                       id="specialRequests"
                       value={form.specialRequests}
                       onChange={(e) => handleInputChange('specialRequests', e.target.value)}
-                      className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400/50 transition-all resize-none text-center"
+                      className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-600 transition-all resize-none text-slate-800 dark:text-slate-200 bg-white dark:bg-slate-900 text-xs font-semibold"
                       rows="3"
                       maxLength="500"
-                      placeholder=""
+                      placeholder="Any specific food choices, room requests, or details..."
                     />
-                    <p className="text-xs text-slate-400 mt-1 text-right">
+                    <p className="text-[9px] font-bold text-slate-400 mt-1 text-right">
                       {form.specialRequests.length}/500 characters
                     </p>
                   </div>
 
-                  <div className="flex gap-3 pt-4">
+                  <div className="flex gap-4 pt-4">
                     <button
                       type="button"
                       onClick={onClose}
                       disabled={loading}
-                      className="flex-1 py-3 rounded-xl font-semibold text-sm transition-all border border-slate-200 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="flex-1 py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-all border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                       style={{ color: '#6b7280' }}
                     >
                       Cancel
@@ -305,11 +305,10 @@ export default function BookingModal({ isOpen, onClose, pkg }) {
                     <button
                       type="submit"
                       disabled={loading || !isLoggedIn}
-                      className="flex-1 py-3 rounded-xl font-bold text-sm uppercase tracking-wider transition-all hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                      className="flex-1 py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider text-white transition-all hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none cursor-pointer"
                       style={{ 
-                        background: loading ? '#9ca3af' : 'linear-gradient(135deg, #f59e0b, #fbbf24)', 
-                        color: '#0f172a', 
-                        boxShadow: loading ? 'none' : '0 4px 16px rgba(245,158,11,0.3)' 
+                        background: loading ? '#9ca3af' : 'linear-gradient(135deg, var(--primary), var(--secondary))', 
+                        boxShadow: loading ? 'none' : '0 4px 16px rgba(37,99,235,0.2)' 
                       }}
                     >
                       {loading ? (
@@ -320,13 +319,13 @@ export default function BookingModal({ isOpen, onClose, pkg }) {
                           </svg>
                           Submitting...
                         </span>
-                      ) : 'Submit Request'}
+                      ) : 'Confirm Booking'}
                     </button>
                   </div>
                   
                   {!isLoggedIn && (
-                    <p className="text-xs text-center text-slate-500 mt-2">
-                      Please <button type="button" onClick={() => { onClose(); navigate('/auth/user'); }} className="text-[#7C3AED] hover:underline font-semibold">login</button> to submit your booking
+                    <p className="text-[10px] text-center text-slate-500 mt-3 font-semibold">
+                      Please <button type="button" onClick={() => { onClose(); navigate('/auth/user'); }} className="text-blue-600 dark:text-blue-400 hover:underline font-bold">login</button> to submit your booking
                     </p>
                   )}
                 </form>

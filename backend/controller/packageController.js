@@ -31,7 +31,10 @@ exports.getPackages = async (req, res) => {
       filter.status = 'Active';
     }
 
-    if (type && type !== 'All')       filter.type = type;
+    if (type && type !== 'All') {
+      filter.$or = filter.$or || [];
+      filter.$or.push({ type: type }, { category: type });
+    }
     if (category && category !== 'All') filter.category = category;
     if (destination)                  filter.destination = { $regex: destination, $options: 'i' };
     if (country)                      filter.country = { $regex: country, $options: 'i' };

@@ -10,37 +10,47 @@ import api from '../utils/api';
 
 const TYPES = ['All', 'International', 'Family', 'Adventure', 'Luxury', 'Wildlife', 'Cultural'];
 const BUDGETS = [
-  { label: 'Any Budget',    min: '',    max: '' },
-  { label: 'Under $1,000', min: '0',    max: '999' },
-  { label: '$1,000–$2,000',min: '1000', max: '1999' },
-  { label: '$2,000–$3,000',min: '2000', max: '2999' },
-  { label: '$3,000+',      min: '3000', max: '' },
+  { label: 'Any Budget',       min: '',      max: '' },
+  { label: 'Under ₹15,000',    min: '0',     max: '14999' },
+  { label: '₹15,000–₹25,000',  min: '15000', max: '24999' },
+  { label: '₹25,000–₹40,000',  min: '25000', max: '39999' },
+  { label: '₹40,000+',         min: '40000', max: '' },
 ];
 const PER_PAGE = 6;
 
-/* FilterPanel lifted outside Packages so it is never re-created during render */
 function FilterPanel({ type, setType, budget, setBudget, activeFilters, clearFilters }) {
   return (
-    <div>
-      <div className="flex items-center justify-between mb-6">
-        <h3 className="text-sm font-bold uppercase tracking-widest flex items-center gap-2" style={{ color: '#0f172a' }}>
-          <FiFilter size={14} style={{ color: '#7C3AED' }} />Filters
+    <div className="space-y-8">
+      {/* Panel Header */}
+      <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800">
+        <h3 className="text-sm font-bold uppercase tracking-widest flex items-center gap-2 text-slate-900 dark:text-white" style={{ fontFamily: 'Outfit, sans-serif' }}>
+          <FiFilter className="text-blue-600" /> Filters
         </h3>
         {activeFilters > 0 && (
-          <button onClick={clearFilters} className="text-xs font-semibold flex items-center gap-1" style={{ color: '#7C3AED' }}>
-            <FiX size={12} />Clear ({activeFilters})
+          <button 
+            onClick={clearFilters} 
+            className="text-[10px] font-bold uppercase tracking-wider flex items-center gap-1 text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/45 px-2.5 py-1.5 rounded-lg cursor-pointer"
+          >
+            Clear ({activeFilters})
           </button>
         )}
       </div>
 
-      <div className="mb-6">
-        <p className="text-[0.8125rem] font-bold uppercase tracking-widest mb-3" style={{ color: '#4b5563' }}>Tour Type</p>
-        <div className="space-y-2">
+      {/* Tour Type */}
+      <div>
+        <p className="text-[10px] font-extrabold uppercase tracking-widest mb-4 text-slate-400 dark:text-slate-550">Tour Category</p>
+        <div className="space-y-2.5">
           {TYPES.map(t => (
-            <label key={t} className="flex items-center gap-3 cursor-pointer">
-              <input type="radio" name="type" checked={type === t} onChange={() => setType(t)}
-                style={{ accentColor: '#7C3AED' }} />
-              <span className="text-sm" style={{ color: type === t ? '#0f172a' : '#4b5563', fontWeight: type === t ? 600 : 400 }}>
+            <label key={t} className="flex items-center gap-3 cursor-pointer select-none text-xs font-semibold text-slate-700 dark:text-slate-350 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+              <input 
+                type="radio" 
+                name="type" 
+                checked={type === t} 
+                onChange={() => setType(t)}
+                className="w-4 h-4 cursor-pointer"
+                style={{ accentColor: '#2563EB' }} 
+              />
+              <span className={type === t ? 'text-blue-600 dark:text-blue-400 font-bold' : ''}>
                 {t}
               </span>
             </label>
@@ -48,14 +58,21 @@ function FilterPanel({ type, setType, budget, setBudget, activeFilters, clearFil
         </div>
       </div>
 
-      <div className="mb-6">
-        <p className="text-[0.8125rem] font-bold uppercase tracking-widest mb-3" style={{ color: '#4b5563' }}>Budget</p>
-        <div className="space-y-2">
+      {/* Budget */}
+      <div>
+        <p className="text-[10px] font-extrabold uppercase tracking-widest mb-4 text-slate-400 dark:text-slate-550">Budget Bracket</p>
+        <div className="space-y-2.5">
           {BUDGETS.map((b, i) => (
-            <label key={i} className="flex items-center gap-3 cursor-pointer">
-              <input type="radio" name="budget" checked={budget === i} onChange={() => setBudget(i)}
-                style={{ accentColor: '#7C3AED' }} />
-              <span className="text-sm" style={{ color: budget === i ? '#0f172a' : '#4b5563', fontWeight: budget === i ? 600 : 400 }}>
+            <label key={i} className="flex items-center gap-3 cursor-pointer select-none text-xs font-semibold text-slate-700 dark:text-slate-350 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+              <input 
+                type="radio" 
+                name="budget" 
+                checked={budget === i} 
+                onChange={() => setBudget(i)}
+                className="w-4 h-4 cursor-pointer"
+                style={{ accentColor: '#2563EB' }} 
+              />
+              <span className={budget === i ? 'text-blue-600 dark:text-blue-400 font-bold' : ''}>
                 {b.label}
               </span>
             </label>
@@ -89,7 +106,7 @@ export default function Packages() {
         params.append('page', page);
         params.append('limit', PER_PAGE);
         if (search) params.append('search', search);
-        if (type !== 'All') params.append('category', type);
+        if (type !== 'All') params.append('type', type);
         
         const b = BUDGETS[budget];
         if (b.min) params.append('minPrice', b.min);
@@ -115,27 +132,27 @@ export default function Packages() {
   const handleFilterChange = (setter) => (val) => { setter(val); setPage(1); };
 
   return (
-    <div className="min-h-screen page-enter" style={{ background: '#ffffff' }}>
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-300">
       <SEO
-        title="Luxury Tour Packages"
-        description={`Browse luxury tour packages. Filter by type, budget, and destination. International, honeymoon, family and adventure packages.`}
+        title="Explore Bespoke Tour Packages | TravelGo"
+        description="Filter luxury packages by category, budget, and destination. Santorini sunsets, Swiss rail corridors, and private Maldives overwater villas."
         canonical="/packages"
       />
 
       <PageHero
-        badge="Explore"
+        badge="Luxury Vacation Plans"
         title="Tour Packages"
-        subtitle={`Carefully curated packages for every type of traveler`}
+        subtitle="Meticulously mapped itineraries for families, couples, and adventurers"
         image="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1400&q=60"
       />
 
-      <section className="py-12" style={{ background: '#ffffff' }}>
+      <section className="py-24 bg-white dark:bg-slate-900 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="flex flex-col lg:flex-row gap-8">
+          <div className="flex flex-col lg:flex-row gap-12">
 
-            {/* Desktop Sidebar */}
+            {/* Desktop Filters Sidebar */}
             <aside className="hidden lg:block lg:w-64 shrink-0" aria-label="Package filters">
-              <div className="sticky top-28 rounded-2xl p-6" style={{ background: '#fff', boxShadow: '0 4px 24px rgba(10,25,47,0.06)' }}>
+              <div className="sticky top-28 rounded-3xl p-6 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 shadow-sm">
                 <FilterPanel
                   type={type} setType={handleFilterChange(setType)}
                   budget={budget} setBudget={handleFilterChange(setBudget)}
@@ -144,98 +161,116 @@ export default function Packages() {
               </div>
             </aside>
 
-            {/* Main */}
-            <div className="flex-1">
-              {/* Toolbar */}
-              <div className="rounded-2xl p-4 mb-6 flex flex-wrap items-center gap-3"
-                style={{ background: '#fff', boxShadow: '0 2px 12px rgba(10,25,47,0.06)' }}>
-                <div className="flex items-center gap-2 flex-1 min-w-48 rounded-xl px-4 py-2.5"
-                  style={{ border: '1.5px solid #e8e4dc' }}>
-                  <FiSearch style={{ color: '#7C3AED' }} />
+            {/* Packages Main Panel */}
+            <div className="flex-1 space-y-8">
+              
+              {/* Upper Toolbar Bar */}
+              <div className="rounded-3xl p-4 flex flex-wrap items-center gap-4 bg-slate-50 dark:bg-slate-900/40 border border-slate-200/50 dark:border-slate-800 shadow-sm">
+                
+                {/* Search Field */}
+                <div className="premium-input-container flex-1 min-w-[200px]">
                   <input
                     type="text"
-                    placeholder=""
+                    placeholder=" "
                     value={search}
                     onChange={e => { setSearch(e.target.value); setPage(1); }}
-                    className="flex-1 outline-none text-sm"
-                    style={{ fontFamily: 'DM Sans, sans-serif', background: 'transparent', color: '#1a1a1a' }}
+                    className="premium-input"
                     aria-label="Search packages"
                   />
+                  <FiSearch className="input-icon text-lg" />
+                  <label className="premium-label">Search Destinations...</label>
                   {search && (
-                    <button onClick={() => { setSearch(''); setPage(1); }} aria-label="Clear search">
-                      <FiX size={14} style={{ color: '#aaa' }} />
+                    <button 
+                      onClick={() => { setSearch(''); setPage(1); }} 
+                      className="absolute right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer"
+                      aria-label="Clear search"
+                    >
+                      <FiX size={16} />
                     </button>
                   )}
                 </div>
 
-                <select value={sort} onChange={e => { setSort(e.target.value); setPage(1); }}
-                  className="rounded-xl px-4 py-2.5 text-sm outline-none cursor-pointer"
-                  style={{ border: '1.5px solid #e8e4dc', fontFamily: 'DM Sans, sans-serif', color: '#1a1a1a', background: '#fff' }}
-                  aria-label="Sort packages">
-                  <option value="default">Sort: Default</option>
+                {/* Sort Option dropdown */}
+                <select 
+                  value={sort} 
+                  onChange={e => { setSort(e.target.value); setPage(1); }}
+                  className="h-14 px-4 rounded-xl text-xs font-bold uppercase tracking-wider border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-805 dark:text-slate-200 outline-none focus:border-blue-500 transition-colors cursor-pointer"
+                  aria-label="Sort packages"
+                >
+                  <option value="default">Default Sort</option>
                   <option value="price_asc">Price: Low → High</option>
                   <option value="price_desc">Price: High → Low</option>
-                  <option value="rating">Top Rated</option>
+                  <option value="rating">Highest Rated</option>
                 </select>
 
-                <div className="flex rounded-xl overflow-hidden" style={{ border: '1.5px solid #e8e4dc' }}>
-                  <button onClick={() => setView('grid')} className="p-2.5 transition-all"
-                    style={{ background: view === 'grid' ? '#0f172a' : '#fff', color: view === 'grid' ? '#fff' : '#888' }}
-                    aria-label="Grid view" aria-pressed={view === 'grid'}>
-                    <FiGrid size={15} />
+                {/* View togglers */}
+                <div className="flex h-14 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900">
+                  <button 
+                    onClick={() => setView('grid')} 
+                    className={`px-4 transition-all cursor-pointer ${view === 'grid' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-350'}`}
+                    aria-label="Grid view" 
+                    aria-pressed={view === 'grid'}
+                  >
+                    <FiGrid size={16} />
                   </button>
-                  <button onClick={() => setView('list')} className="p-2.5 transition-all"
-                    style={{ background: view === 'list' ? '#0f172a' : '#fff', color: view === 'list' ? '#fff' : '#888' }}
-                    aria-label="List view" aria-pressed={view === 'list'}>
-                    <FiList size={15} />
+                  <button 
+                    onClick={() => setView('list')} 
+                    className={`px-4 transition-all cursor-pointer ${view === 'list' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-350'}`}
+                    aria-label="List view" 
+                    aria-pressed={view === 'list'}
+                  >
+                    <FiList size={16} />
                   </button>
                 </div>
 
-                <button onClick={() => setMobileFilters(true)}
-                  className="lg:hidden flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider"
-                  style={{ border: '1.5px solid #e8e4dc', color: '#0f172a', background: activeFilters > 0 ? 'rgba(124,58,237,0.08)' : '#fff' }}
-                  aria-label="Open filters">
-                  <FiFilter size={13} /> Filters {activeFilters > 0 && `(${activeFilters})`}
+                {/* Mobile Filters trigger */}
+                <button 
+                  onClick={() => setMobileFilters(true)}
+                  className="lg:hidden flex items-center justify-center gap-2 h-14 px-5 rounded-xl text-xs font-bold uppercase tracking-wider border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 cursor-pointer"
+                  aria-label="Open filters"
+                >
+                  <FiFilter size={14} /> Filters {activeFilters > 0 && `(${activeFilters})`}
                 </button>
 
-                <span className="text-[0.8125rem] font-medium" style={{ color: '#4b5563' }}>
-                  {totalItems} package{totalItems !== 1 ? 's' : ''} found
+                <span className="text-xs font-bold text-slate-450 dark:text-slate-500 uppercase tracking-wide ml-auto">
+                  {totalItems} Package{totalItems !== 1 ? 's' : ''}
                 </span>
               </div>
 
-              {/* Results */}
+              {/* Package Results list */}
               {loading ? (
                 <div className="flex justify-center items-center py-24">
-                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#7C3AED]"></div>
+                  <div className="animate-spin rounded-full h-10 w-10 border-2 border-blue-600 border-t-transparent"></div>
                 </div>
               ) : packages.length > 0 ? (
-                <div className={view === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5' : 'space-y-4'}>
+                <div className={view === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8' : 'space-y-8'}>
                   {packages.map((pkg, i) => <PackageCard key={pkg._id || pkg.id} pkg={pkg} index={i} />)}
                 </div>
               ) : (
-                <div className="text-center py-24 rounded-2xl" style={{ background: '#fff' }}>
-                  <div className="text-5xl mb-4">🔍</div>
-                  <h3 className="text-2xl font-light mb-2" style={{ fontFamily: 'Inter, sans-serif', color: '#0f172a' }}>
-                    No packages found
-                  </h3>
-                  <p className="text-sm mb-6" style={{ color: '#888' }}>Try adjusting your search or filters</p>
-                  <button onClick={clearFilters} className="btn-outline">Clear All Filters</button>
+                <div className="text-center py-24 rounded-3xl bg-slate-50 dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800">
+                  <div className="text-4xl mb-4">🔍</div>
+                  <h3 className="text-xl font-bold mb-1.5 text-slate-900 dark:text-white" style={{ fontFamily: 'Outfit, sans-serif' }}>No packages matched</h3>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mb-6">Try refining your search terms or clearing your filter selection.</p>
+                  <button onClick={clearFilters} className="btn-premium py-3 px-6 h-auto text-[10px] font-bold uppercase tracking-wider">Reset Search Filters</button>
                 </div>
               )}
 
-              {/* Pagination */}
+              {/* Pagination Dots list */}
               {totalPages > 1 && (
-                <div className="flex justify-center gap-2 mt-10" role="navigation" aria-label="Pagination">
+                <div className="flex justify-center gap-2 pt-6" role="navigation" aria-label="Pagination">
                   {Array.from({ length: totalPages }).map((_, i) => (
-                    <button key={i} onClick={() => { setPage(i + 1); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-                      className="w-10 h-10 rounded-full text-sm font-semibold transition-all"
+                    <button 
+                      key={i} 
+                      onClick={() => { setPage(i + 1); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                      className="w-10 h-10 rounded-xl text-xs font-bold transition-all border cursor-pointer flex items-center justify-center"
                       style={{
-                        background: page === i + 1 ? '#0f172a' : '#fff',
-                        color: page === i + 1 ? '#fff' : '#888',
-                        border: `1.5px solid ${page === i + 1 ? '#0f172a' : '#e8e4dc'}`,
+                        background: page === i + 1 ? '#2563EB' : 'transparent',
+                        borderColor: page === i + 1 ? '#2563EB' : 'var(--border)',
+                        color: page === i + 1 ? '#fff' : 'var(--text-primary)',
                       }}
                       aria-label={`Page ${i + 1}`}
-                      aria-current={page === i + 1 ? 'page' : undefined}>
+                      aria-current={page === i + 1 ? 'page' : undefined}
+                    >
                       {i + 1}
                     </button>
                   ))}
@@ -246,29 +281,37 @@ export default function Packages() {
         </div>
       </section>
 
-      {/* Mobile Filter Drawer */}
+      {/* Mobile Filters slide-in sidebar */}
       {mobileFilters && (
         <div className="fixed inset-0 z-50 lg:hidden">
-          <div className="absolute inset-0 bg-black/50" onClick={() => setMobileFilters(false)} />
+          <div className="absolute inset-0 bg-slate-950/60 backdrop-blur-sm" onClick={() => setMobileFilters(false)} />
           <motion.div
             initial={{ x: '-100%' }}
             animate={{ x: 0 }}
-            className="absolute top-0 left-0 bottom-0 w-80 p-6 overflow-y-auto"
-            style={{ background: '#fff', maxWidth: '90vw' }}>
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="font-bold text-lg" style={{ fontFamily: 'Inter, sans-serif', color: '#0f172a' }}>Filters</h3>
-              <button onClick={() => setMobileFilters(false)} aria-label="Close filters"
-                className="w-9 h-9 rounded-full flex items-center justify-center" style={{ background: '#f8f6f2' }}>
+            className="absolute top-0 left-0 bottom-0 w-80 p-6 overflow-y-auto bg-white dark:bg-slate-900 shadow-2xl border-r border-slate-200/50 dark:border-slate-800"
+            style={{ maxWidth: '90vw' }}
+          >
+            <div className="flex items-center justify-between pb-6 mb-6 border-b border-slate-100 dark:border-slate-800">
+              <h3 className="font-bold text-lg text-slate-900 dark:text-white" style={{ fontFamily: 'Outfit, sans-serif' }}>Filters</h3>
+              <button 
+                onClick={() => setMobileFilters(false)} 
+                aria-label="Close filters"
+                className="w-8 h-8 rounded-full flex items-center justify-center bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 cursor-pointer"
+              >
                 <FiX size={16} />
               </button>
             </div>
+            
             <FilterPanel
               type={type} setType={handleFilterChange(setType)}
               budget={budget} setBudget={handleFilterChange(setBudget)}
               activeFilters={activeFilters} clearFilters={clearFilters}
             />
-            <button onClick={() => setMobileFilters(false)} className="btn-primary w-full justify-center mt-4"
-              style={{ width: '100%' }}>
+            
+            <button 
+              onClick={() => setMobileFilters(false)} 
+              className="btn-premium w-full mt-8 text-xs font-bold uppercase tracking-wider cursor-pointer"
+            >
               Show {totalItems} Packages
             </button>
           </motion.div>

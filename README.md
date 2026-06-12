@@ -1,128 +1,64 @@
-# 🌍 TravelGo - Tour Planning Agency
+# TravelGo ✈️🌍
 
-A full-stack MERN application for a tour planning agency with package booking, user authentication, admin dashboard, and payment integration.
+TravelGo is a premium travel planning and booking platform built with the MERN stack (MongoDB, Express, React, Node.js). It features a modern, responsive user interface with luxurious design aesthetics and a robust backend for managing destinations, packages, and bookings.
 
-## 🚀 Features
+## 🌟 Key Features
 
-- **User Authentication** - Sign up, login, JWT-based auth
-- **Tour Packages** - Browse, search, and filter tour packages
-- **Booking System** - Book tours with payment integration (Razorpay)
-- **Admin Dashboard** - Manage packages, bookings, users, and content
-- **Wishlist** - Save favorite packages
-- **Reviews & Ratings** - User reviews for packages
-- **Responsive Design** - Mobile-friendly UI
+- **User Authentication**: Secure JWT-based login and registration.
+- **Premium UI/UX**: Designed with Tailwind CSS, Framer Motion animations, and a focus on visual excellence.
+- **Dynamic Tour Packages**: Browse, filter, and search through curated luxury travel packages.
+- **Booking System**: Seamlessly book packages with intuitive modals and tracking.
+- **Admin Dashboard**: Comprehensive control panel to manage inquiries, users, and bookings.
+- **Responsive Design**: Flawlessly optimized for desktop, tablet, and mobile viewing.
 
-## 🛠️ Tech Stack
+## 🛠 Tech Stack
 
-- **Frontend:** React 19, Vite, Tailwind CSS 4, React Router
-- **Backend:** Node.js, Express.js
-- **Database:** MongoDB (Mongoose)
-- **Authentication:** JWT, bcryptjs
-- **Payments:** Razorpay
+- **Frontend**: React 19, Vite, Tailwind CSS v4, Framer Motion, React Router, React Leaflet.
+- **Backend**: Node.js, Express.js, MongoDB Atlas, Mongoose, JWT.
+- **Deployment Ready**: Optimized for Vercel with Serverless Functions.
 
-## 📦 Installation
-
-```bash
-# Clone the repository
-git clone <your-repo-url>
-cd tour-planning-agency-main
-
-# Install all dependencies
-npm run install:all
-# OR manually:
-npm install --prefix frontend
-npm install --prefix backend
-```
-
-## ⚙️ Configuration
-
-### Backend (.env)
-```env
-MONGODB_URI=mongodb+srv://<username>:<password>@<cluster>/travelgo?retryWrites=true&w=majority
-PORT=5000
-JWT_SECRET=your_jwt_secret_key
-NODE_ENV=development
-```
-
-### Frontend
-The frontend is pre-configured to proxy API calls to `http://localhost:5000`. Modify `vite.config.js` if needed.
-
-## 🏃 Run the Application
-
-### Development Mode (Both Frontend & Backend)
-```bash
-npm run dev
-# or
-npm start
-```
-
-This runs:
-- Frontend: http://localhost:5173
-- Backend: http://localhost:5000
-
-### Run separately
-```bash
-# Backend only
-npm run dev --prefix backend
-
-# Frontend only
-npm run dev --prefix frontend
-```
-
-### Build for Production
-```bash
-npm run build --prefix frontend
-```
-
-## 📁 Project Structure
+## 📂 Project Structure
 
 ```
-tour-planning-agency-main/
-├── backend/
-│   ├── controller/     # Route handlers
-│   ├── model/          # Mongoose models
-│   ├── routers/        # API routes
-│   ├── utlis/          # Utilities (auth, jwt, upload)
-│   ├── Server.js       # Main server file
-│   └── .env            # Environment variables
-├── frontend/
+travelgo/
+├── frontend/             # React (Vite) application
 │   ├── src/
-│   │   ├── components/ # React components
-│   │   ├── pages/      # Page components
-│   │   ├── routes/     # Route definitions
-│   │   ├── context/    # React context (Auth, etc.)
-│   │   ├── assets/     # Static assets
-│   │   └── utils/      # Helper functions
-│   └── dist/           # Production build
-├── .gitignore
-├── package.json        # Root scripts (concurrently)
-└── README.md
+│   │   ├── components/   # Reusable UI components
+│   │   ├── pages/        # Route pages (Home, Packages, Admin Dashboard, etc.)
+│   │   ├── utils/        # API configuration and utilities
+│   │   └── routes/       # React Router configurations
+│   ├── index.html
+│   └── vite.config.js
+├── backend/              # Node.js/Express server
+│   ├── model/            # Mongoose schemas
+│   ├── routers/          # Express route handlers
+│   ├── controller/       # Business logic controllers
+│   ├── Server.js         # Entry point (Vercel Serverless adapted)
+│   └── seedPackages.js   # Database seeding scripts
+├── vercel.json           # Vercel monorepo deployment config
+├── .env.example          # Environment variables template
+└── package.json          # Root Monorepo configuration
 ```
 
-## 🔑 Default Admin Credentials
+## 🚀 Local Development
 
-After first run, create an admin user via:
-```bash
-node backend/seedAdmin.js
-```
+1. **Clone the repository.**
+2. **Install all dependencies:**
+   ```bash
+   npm run install:all
+   ```
+3. **Set up Environment Variables:**
+   Rename `.env.example` to `.env` inside the `backend` folder and provide your MongoDB connection string.
+4. **Start the Development Server:**
+   ```bash
+   npm run dev
+   ```
+   *This command spins up both the frontend (Vite) and backend (Express) concurrently.*
 
-## 📝 API Endpoints
+## 🌍 Production Deployment
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | /api/auth/signup | Register new user |
-| POST | /api/auth/login | User login |
-| GET | /api/packages | Get all packages |
-| POST | /api/bookings | Create booking |
-| GET | /api/admin/... | Admin routes |
+TravelGo is pre-configured to be deployed as a Monorepo on **Vercel**. 
+Please see [VERCEL_DEPLOYMENT.md](VERCEL_DEPLOYMENT.md) for step-by-step dashboard instructions, or [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md) for general deployment architectures.
 
-## ⚠️ Security Notes
-
-- Change `JWT_SECRET` in production
-- Use strong MongoDB credentials
-- Enable proper Network Access in MongoDB Atlas
-- Never commit `.env` file to version control
-
-## 📄 License
-
-ISC
+---
+*Built for unforgettable journeys.*
