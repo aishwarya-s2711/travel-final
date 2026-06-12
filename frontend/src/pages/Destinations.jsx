@@ -1,11 +1,11 @@
-// src/pages/Destinations.jsx
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { FiFilter, FiSearch, FiX } from 'react-icons/fi';
 import DestinationCard from '../components/DestinationCard';
 import { destinations } from '../data/destinations';
 import SEO from '../components/SEO';
 import PageHero from '../components/PageHero';
 import Footer from '../components/Footer';
+import api from '../utils/api';
 
 // Extract unique categories from data
 const CATEGORIES = ['All', ...Array.from(new Set(destinations.map(d => d.category).filter(c => c !== 'Romance')))];
@@ -14,6 +14,19 @@ export default function Destinations() {
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('All');
   const [mobileFilters, setMobileFilters] = useState(false);
+  const [packages, setPackages] = useState([]);
+
+  useEffect(() => {
+    const fetchPackages = async () => {
+      try {
+        const res = await api.get('/packages?status=Active');
+        setPackages(res.data.packages || []);
+      } catch (err) {
+        console.error('Failed to load packages in Destinations page', err);
+      }
+    };
+    fetchPackages();
+  }, []);
 
   const filtered = useMemo(() => {
     return destinations.filter(d => {
@@ -106,9 +119,20 @@ export default function Destinations() {
           {/* Destination Cards list */}
           {filtered.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-              {filtered.map(dest => (
-                <DestinationCard key={dest.id} destination={dest} />
-              ))}
+              {filtered.map(dest => {
+                const matchedPkg = packages.find(p => 
+                  p.destination.toLowerCase() === dest.name.toLowerCase() ||
+                  (dest.name.toLowerCase() === 'swiss alps' && p.destination.toLowerCase().includes('swiss')) ||
+                  (dest.name.toLowerCase() === 'kerala' && p.destination.toLowerCase().includes('kerala'))
+                );
+                return (
+                  <DestinationCard 
+                    key={dest.id} 
+                    destination={dest} 
+                    pkg={matchedPkg} 
+                  />
+                );
+              })}
             </div>
           ) : (
             <div className="text-center py-20 rounded-3xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50">

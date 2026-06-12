@@ -164,7 +164,16 @@ export default function DestinationDetail() {
                 <h3 className="text-2xl font-bold text-[#0f172a] mb-2">Plan Your Trip</h3>
                 <p className="text-sm text-[#64748b]">Explore exclusive packages to {data.name}</p>
               </div>
-              <button onClick={() => navigate(`/packages?search=${data.name}`)} className="w-full py-4 bg-gradient-to-r from-[#0f172a] to-[#1e293b] text-white rounded-xl font-bold tracking-widest uppercase hover:shadow-xl hover:-translate-y-1 transition-all">
+              <button 
+                onClick={() => {
+                  if (packages.length > 0) {
+                    navigate(`/packages/${packages[0]._id || packages[0].id}`);
+                  } else {
+                    navigate(`/packages?search=${encodeURIComponent(data.name)}`);
+                  }
+                }} 
+                className="w-full py-4 bg-gradient-to-r from-[#0f172a] to-[#1e293b] text-white rounded-xl font-bold tracking-widest uppercase hover:shadow-xl hover:-translate-y-1 transition-all"
+              >
                 Book Now
               </button>
             </div>

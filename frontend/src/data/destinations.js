@@ -72,7 +72,7 @@ export const destinations = [
     name: 'Patagonia',
     country: 'Argentina',
     category: 'Adventure',
-    image: 'https://images.unsplash.com/photo-1518090626353-c211b65e9c01?w=800&fit=crop&auto=format',
+    image: '/patagonia.png',
     description: 'Rugged landscapes, glacier trekking, untouched wilderness.',
   },
   {
@@ -117,18 +117,18 @@ export const destinations = [
   },
   {
     id: 15,
-    name: 'Cinque Terre',
-    country: 'Italy',
+    name: 'Singapore',
+    country: 'Singapore',
     category: 'International',
-    image: 'https://images.unsplash.com/photo-1499678329028-101435549a4e?w=800&fit=crop&auto=format',
-    description: 'Colorful cliffside villages, Mediterranean sea.',
+    image: 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=800&fit=crop&auto=format',
+    description: 'Futuristic Gardens by the Bay, shopping at Marina Bay Sands, and night safaris.',
   },
   {
     id: 16,
     name: 'Tokyo',
     country: 'Japan',
     category: 'International',
-    image: 'https://images.unsplash.com/photo-1540959733332-eab4deceeaf7?w=800&fit=crop&auto=format',
+    image: '/tokyo.png',
     description: 'Neon skyscrapers, traditional temples, and gourmet sushi.',
   },
   {
@@ -136,7 +136,7 @@ export const destinations = [
     name: 'Cairo',
     country: 'Egypt',
     category: 'Cultural',
-    image: 'https://images.unsplash.com/photo-1503177119275-0aa32b31d468?w=800&fit=crop&auto=format',
+    image: '/cairo.png',
     description: 'Ancient pyramids, timeless deserts, and vibrant khan bazaars.',
   },
   {

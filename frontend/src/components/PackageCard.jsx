@@ -119,9 +119,9 @@ export default function PackageCard({ pkg, index = 0 }) {
             <button
               onClick={() => setIsModalOpen(true)}
               className="flex items-center gap-1.5 h-10 px-5 rounded-xl text-[10px] font-bold uppercase tracking-wider text-white bg-blue-600 hover:bg-blue-700 hover:-translate-y-0.5 transition-all duration-300 shadow-sm cursor-pointer shrink-0"
-              aria-label={`View details for ${pkg.title}`}
+              aria-label={`Book now for ${pkg.title}`}
             >
-              View Details <HiArrowLongRight size={14} />
+              Book Now <HiArrowLongRight size={14} />
             </button>
           </div>
 
